@@ -1,8 +1,11 @@
-package mike.weather;
+package mike.weather.ui.main;
 
 import java.util.List;
 
-public interface SimpleActivityContract {
+import mike.weather.data.model.WeatherInfo;
+import mike.weather.ui.base.BasePresenter;
+
+public interface MainActivityContract {
     interface View {
         void showCitiesList(List<WeatherInfo> citiesList);
     }

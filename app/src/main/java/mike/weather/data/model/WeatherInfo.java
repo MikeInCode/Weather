@@ -1,4 +1,4 @@
-package mike.weather;
+package mike.weather.data.model;
 
 public class WeatherInfo {
     private String mCityName;

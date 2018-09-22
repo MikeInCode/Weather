@@ -1,17 +1,23 @@
-package mike.weather;
+package mike.weather.ui.main;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleActivityPresenter implements SimpleActivityContract.Presenter {
-    private SimpleActivityContract.View mView;
+import javax.inject.Inject;
 
-    public SimpleActivityPresenter() {
+import mike.weather.R;
+import mike.weather.data.model.WeatherInfo;
+
+public class MainActivityPresenter implements MainActivityContract.Presenter {
+    private MainActivityContract.View mView;
+
+    @Inject
+    public MainActivityPresenter() {
 
     }
 
     @Override
-    public void attach(SimpleActivityContract.View view) {
+    public void attach(MainActivityContract.View view) {
         mView = view;
     }
 

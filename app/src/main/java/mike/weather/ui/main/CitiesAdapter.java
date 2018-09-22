@@ -1,4 +1,4 @@
-package mike.weather;
+package mike.weather.ui.main;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +10,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mike.weather.R;
+import mike.weather.data.model.WeatherInfo;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
     private List<WeatherInfo> mCitiesList;
 
+    @Inject
     public CitiesAdapter() {
         mCitiesList = new ArrayList<>();
     }
