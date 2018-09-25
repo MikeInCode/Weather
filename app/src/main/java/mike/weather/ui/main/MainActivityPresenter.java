@@ -1,19 +1,16 @@
 package mike.weather.ui.main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
-import mike.weather.R;
-import mike.weather.data.model.WeatherInfo;
+import mike.weather.data.IDataManager;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
     private MainActivityContract.View mView;
+    private IDataManager dataManager;
 
     @Inject
-    public MainActivityPresenter() {
-
+    public MainActivityPresenter(IDataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
     @Override
@@ -28,9 +25,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void refreshWeatherList() {
-        List<WeatherInfo> citiesList = new ArrayList<>();
-        citiesList.add(new WeatherInfo("Odessa", "Ukraine", "23°", R.drawable.ic_sunny));
-        citiesList.add(new WeatherInfo("Kiev", "Ukraine", "19°", R.drawable.ic_sunny));
-        mView.showCitiesList(citiesList);
+
     }
 }

@@ -1,12 +1,12 @@
 package mike.weather.data.model;
 
-public class WeatherInfo {
+public class CityInfo {
     private String mCityName;
     private String mCountryName;
     private String mTemperature;
     private int mConditionImage;
 
-    public WeatherInfo(String mCityName, String mCountryName, String mTemperature, int mConditionImage) {
+    public CityInfo(String mCityName, String mCountryName, String mTemperature, int mConditionImage) {
         this.mCityName = mCityName;
         this.mCountryName = mCountryName;
         this.mTemperature = mTemperature;

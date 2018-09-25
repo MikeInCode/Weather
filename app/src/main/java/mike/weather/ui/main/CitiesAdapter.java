@@ -15,17 +15,17 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.WeatherInfo;
+import mike.weather.data.model.CityInfo;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
-    private List<WeatherInfo> mCitiesList;
+    private List<CityInfo> mCitiesList;
 
     @Inject
     public CitiesAdapter() {
         mCitiesList = new ArrayList<>();
     }
 
-    public void setmCitiesList(List<WeatherInfo> citiesList) {
+    public void setmCitiesList(List<CityInfo> citiesList) {
         mCitiesList.addAll(citiesList);
     }
 
@@ -53,7 +53,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         holder.mCityName.setText(mCitiesList.get(position).getmCityName());
         holder.mCountryName.setText(mCitiesList.get(position).getmCountryName());
         holder.mTemperature.setText(mCitiesList.get(position).getmTemperature());
-        holder.mCondition.setImageResource(mCitiesList.get(position).getmConditionImage());
+        //holder.mCondition.setImageResource(mCitiesList.get(position).getmConditionImage());
     }
 
     @Override
