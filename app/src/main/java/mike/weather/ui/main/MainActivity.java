@@ -1,5 +1,6 @@
 package mike.weather.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,19 +13,21 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.CityInfo;
 import mike.weather.injection.module.MainActivityModule;
+import mike.weather.ui.search.SearchActivity;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
 
     @BindView(R.id.cites_recycler_view)
-    RecyclerView mCitiesRecyclerView;
+    RecyclerView citiesRecyclerView;
     @Inject
-    MainActivityContract.Presenter mPresenter;
+    MainActivityContract.Presenter presenter;
     @Inject
-    CitiesAdapter mAdapter;
+    CitiesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +36,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         ButterKnife.bind(this);
         App.getAppComponent().plus(new MainActivityModule()).inject(this);
 
-        mCitiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mCitiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        mCitiesRecyclerView.setAdapter(mAdapter);
+        citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        citiesRecyclerView.setAdapter(adapter);
 
-        mPresenter.attach(this);
-        mPresenter.refreshWeatherList();
+        presenter.attach(this);
+        presenter.refreshWeatherList();
     }
 
     @Override
     public void showCitiesList(List<CityInfo> citiesList) {
-        mAdapter.setmCitiesList(citiesList);
+        adapter.setmCitiesList(citiesList);
     }
+
+    @Override
+    public void goToSearch() {
+        startActivity(new Intent(this, SearchActivity.class));
+    }
+
+    @OnClick(R.id.add_city_btn)
+    public void addCityBtn() {
+        presenter.addCityBtnClicked();
+    }
+
 }

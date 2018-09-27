@@ -2,29 +2,34 @@ package mike.weather.ui.main;
 
 import javax.inject.Inject;
 
-import mike.weather.data.IDataManager;
+import mike.weather.data.DataManager;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
-    private MainActivityContract.View mView;
-    private IDataManager dataManager;
+    private MainActivityContract.View view;
+    private DataManager dataManager;
 
     @Inject
-    public MainActivityPresenter(IDataManager dataManager) {
+    public MainActivityPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
     @Override
     public void attach(MainActivityContract.View view) {
-        mView = view;
+        this.view = view;
     }
 
     @Override
     public void detach() {
-        mView = null;
+        view = null;
     }
 
     @Override
     public void refreshWeatherList() {
 
+    }
+
+    @Override
+    public void addCityBtnClicked() {
+        view.goToSearch();
     }
 }
