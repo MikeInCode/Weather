@@ -15,17 +15,18 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.CityInfo;
+import mike.weather.data.model.City;
 
-public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
-    private List<CityInfo> mCitiesList;
+public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.ViewHolder> {
+
+    private List<City> mCitiesList;
 
     @Inject
-    public CitiesAdapter() {
+    public MainCitiesAdapter() {
         mCitiesList = new ArrayList<>();
     }
 
-    public void setmCitiesList(List<CityInfo> citiesList) {
+    public void setmCitiesList(List<City> citiesList) {
         mCitiesList.addAll(citiesList);
     }
 
@@ -42,17 +43,17 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
     }
 
     @Override
-    public CitiesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MainCitiesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cities_list_item, parent, false);
+                .inflate(R.layout.main_cities_list_item, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mCityName.setText(mCitiesList.get(position).getmCityName());
-        holder.mCountryName.setText(mCitiesList.get(position).getmCountryName());
-        holder.mTemperature.setText(mCitiesList.get(position).getmTemperature());
+        //holder.mCityName.setText(mCitiesList.get(position).getmCityName());
+        //holder.mCountryName.setText(mCitiesList.get(position).getmCountryName());
+        //holder.mTemperature.setText(mCitiesList.get(position).getmTemperature());
         //holder.mCondition.setImageResource(mCitiesList.get(position).getmConditionImage());
     }
 
