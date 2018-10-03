@@ -14,11 +14,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.City;
+import mike.weather.data.remote.WeatherApi;
 
 public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapter.ViewHolder> {
 
-    private List<City> suggestedCitiesList;
+    private List<WeatherApi.SearchCity> suggestedCitiesList;
     private onItemClickListener onItemClickListener;
 
     @Inject
@@ -26,7 +26,15 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
         suggestedCitiesList = new ArrayList<>();
     }
 
-    public void setSuggestedCitiesList(List<City> suggestedCitiesList) {
+    interface onItemClickListener {
+        void onItemClick(WeatherApi.SearchCity searchCity);
+    }
+
+    public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setSuggestedCitiesList(List<WeatherApi.SearchCity> suggestedCitiesList) {
         this.suggestedCitiesList = suggestedCitiesList;
         notifyDataSetChanged();
     }
@@ -34,10 +42,6 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     public void clearSuggestedCitiesList() {
         suggestedCitiesList.clear();
         notifyDataSetChanged();
-    }
-
-    public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +63,7 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        City city = suggestedCitiesList.get(position);
+        WeatherApi.SearchCity city = suggestedCitiesList.get(position);
         String suggestion = city.getName() + ", "
                 + city.getArea().getId() + ", "
                 + city.getCountry().getName();
@@ -68,7 +72,7 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(city.getKey());
+                onItemClickListener.onItemClick(city);
             }
         });
     }
@@ -76,9 +80,5 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     @Override
     public int getItemCount() {
         return suggestedCitiesList.size();
-    }
-
-    interface onItemClickListener {
-        void onItemClick(String cityKey);
     }
 }

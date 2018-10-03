@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
-import mike.weather.data.model.City;
+import mike.weather.data.model.MainCity;
 import mike.weather.injection.module.MainActivityModule;
 import mike.weather.ui.search.SearchActivity;
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
-    public void showCitiesList(List<City> citiesList) {
+    public void showCitiesList(List<MainCity> citiesList) {
         adapter.setmCitiesList(citiesList);
     }
 

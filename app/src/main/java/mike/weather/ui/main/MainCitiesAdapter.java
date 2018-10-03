@@ -15,18 +15,18 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.City;
+import mike.weather.data.model.MainCity;
 
 public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.ViewHolder> {
 
-    private List<City> mCitiesList;
+    private List<MainCity> mCitiesList;
 
     @Inject
     public MainCitiesAdapter() {
         mCitiesList = new ArrayList<>();
     }
 
-    public void setmCitiesList(List<City> citiesList) {
+    public void setmCitiesList(List<MainCity> citiesList) {
         mCitiesList.addAll(citiesList);
     }
 

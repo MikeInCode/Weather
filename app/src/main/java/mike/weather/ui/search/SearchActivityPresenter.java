@@ -4,9 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import mike.weather.data.AppDataManager;
 import mike.weather.data.DataManager;
-import mike.weather.data.model.City;
+import mike.weather.data.remote.WeatherApi;
 
 public class SearchActivityPresenter implements SearchActivityContract.Presenter {
 
@@ -16,6 +15,11 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     @Inject
     public SearchActivityPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
+    }
+
+    public interface SearchCallback {
+        void onSuccess(List<WeatherApi.SearchCity> suggestedList);
+        void onError();
     }
 
     @Override
@@ -31,9 +35,9 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     @Override
     public void updateSuggestedCitiesList(String searchingQuery) {
         if (searchingQuery.length() > 0) {
-            dataManager.getSuggestedCitiesList(searchingQuery, new AppDataManager.Callback() {
+            dataManager.getSuggestedCitiesList(searchingQuery, new SearchCallback() {
                 @Override
-                public void onSuccess(List<City> suggestedList) {
+                public void onSuccess(List<WeatherApi.SearchCity> suggestedList) {
                     if (!suggestedList.isEmpty()) {
                         view.showSuggestedCitiesList(suggestedList);
                         view.hideCityNotFoundMessage();
@@ -45,7 +49,7 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
 
                 @Override
                 public void onError() {
-                    // TODO View, you need to inform that something goes wrong
+                    //TODO onError logic
                 }
             });
         } else {
@@ -55,8 +59,9 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     }
 
     @Override
-    public void cityClicked(String cityKey) {
-        dataManager.addCityToDb(cityKey);
+    public void cityClicked(WeatherApi.SearchCity searchCity) {
+        dataManager.addCityToDb(searchCity);
+        view.goBack();
     }
 
     @Override

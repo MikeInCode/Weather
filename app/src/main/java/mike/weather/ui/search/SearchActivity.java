@@ -7,9 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
-import mike.weather.data.model.City;
+import mike.weather.data.remote.WeatherApi;
 import mike.weather.injection.module.SearchActivityModule;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityContract.View,
@@ -70,8 +68,18 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
         return false;
     }
 
+    @OnClick(R.id.back_btn)
+    public void backBtn() {
+        presenter.backBtnClicked();
+    }
+
     @Override
-    public void showSuggestedCitiesList(List<City> suggestedList) {
+    public void onItemClick(WeatherApi.SearchCity searchCity) {
+        presenter.cityClicked(searchCity);
+    }
+
+    @Override
+    public void showSuggestedCitiesList(List<WeatherApi.SearchCity> suggestedList) {
         adapter.setSuggestedCitiesList(suggestedList);
     }
 
@@ -93,16 +101,5 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     @Override
     public void goBack() {
         onBackPressed();
-    }
-
-    @OnClick(R.id.back_btn)
-    public void backBtn() {
-        presenter.backBtnClicked();
-    }
-
-    @Override
-    public void onItemClick(String cityKey) {
-        Toast.makeText(SearchActivity.this, cityKey, Toast.LENGTH_LONG).show();
-        presenter.cityClicked(cityKey);
     }
 }

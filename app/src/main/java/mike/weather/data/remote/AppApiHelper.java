@@ -5,8 +5,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import mike.weather.data.model.City;
+import mike.weather.ui.search.SearchActivityPresenter;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 @Singleton
@@ -19,22 +20,17 @@ public class AppApiHelper implements ApiHelper {
         this.weatherApi = weatherApi;
     }
 
-    public interface Callback {
-        void onSuccess(List<City> suggestedList);
-        void onError();
-    }
-
     @Override
-    public void makeCitySearchQuery(String searchingQuery, Callback callback) {
-        weatherApi.getSearchingResult(WeatherApi.apiKey, searchingQuery).enqueue(new retrofit2.Callback<List<City>>() {
+    public void makeCitySearchQuery(String searchingQuery, SearchActivityPresenter.SearchCallback callback) {
+        weatherApi.getSearchingResult(WeatherApi.apiKey, searchingQuery).enqueue(new Callback<List<WeatherApi.SearchCity>>() {
             @Override
-            public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+            public void onResponse(Call<List<WeatherApi.SearchCity>> call, Response<List<WeatherApi.SearchCity>> response) {
                 callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<City>> call, Throwable t) {
-                callback.onError();
+            public void onFailure(Call<List<WeatherApi.SearchCity>> call, Throwable t) {
+
             }
         });
     }
