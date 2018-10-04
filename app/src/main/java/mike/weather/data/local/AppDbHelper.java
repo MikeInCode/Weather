@@ -2,13 +2,18 @@ package mike.weather.data.local;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import mike.weather.data.remote.WeatherApi;
+import mike.weather.data.model.MainCity;
+import mike.weather.data.model.SearchCity;
 
 @Singleton
 public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
@@ -49,7 +54,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void insertCity(WeatherApi.SearchCity searchCity) {
+    public void insertCity(SearchCity searchCity) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_API_KEY, searchCity.getKey());
@@ -57,5 +62,34 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
         values.put(COLUMN_COUNTRY, searchCity.getCountry().getName());
         db.insert(TABLE_CITIES, null, values);
         db.close();
+    }
+
+    @Override
+    public List<MainCity> readAllCities() {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] projection = {
+                COLUMN_API_KEY,
+                COLUMN_NAME,
+                COLUMN_COUNTRY
+        };
+
+        Cursor cursor = db.query(
+                TABLE_CITIES,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        List<MainCity> citiesList = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            citiesList.add(new MainCity(
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_API_KEY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY))));
+        }
+        cursor.close();
+        return citiesList;
     }
 }

@@ -5,7 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mike.weather.data.DataManager;
-import mike.weather.data.remote.WeatherApi;
+import mike.weather.data.model.SearchCity;
+import mike.weather.ui.base.BaseError;
 
 public class SearchActivityPresenter implements SearchActivityContract.Presenter {
 
@@ -17,9 +18,8 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
         this.dataManager = dataManager;
     }
 
-    public interface SearchCallback {
-        void onSuccess(List<WeatherApi.SearchCity> suggestedList);
-        void onError();
+    public interface Callback extends BaseError {
+        void onSuccess(List<SearchCity> suggestedList);
     }
 
     @Override
@@ -35,9 +35,9 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     @Override
     public void updateSuggestedCitiesList(String searchingQuery) {
         if (searchingQuery.length() > 0) {
-            dataManager.getSuggestedCitiesList(searchingQuery, new SearchCallback() {
+            dataManager.getSuggestedCitiesList(searchingQuery, new Callback() {
                 @Override
-                public void onSuccess(List<WeatherApi.SearchCity> suggestedList) {
+                public void onSuccess(List<SearchCity> suggestedList) {
                     if (!suggestedList.isEmpty()) {
                         view.showSuggestedCitiesList(suggestedList);
                         view.hideCityNotFoundMessage();
@@ -48,8 +48,13 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
                 }
 
                 @Override
-                public void onError() {
-                    //TODO onError logic
+                public void onServerError() {
+                    view.showServerErrorToast();
+                }
+
+                @Override
+                public void onInternetError() {
+                    view.showInternetErrorToast();
                 }
             });
         } else {
@@ -59,7 +64,7 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     }
 
     @Override
-    public void cityClicked(WeatherApi.SearchCity searchCity) {
+    public void cityClicked(SearchCity searchCity) {
         dataManager.addCityToDb(searchCity);
         view.goBack();
     }

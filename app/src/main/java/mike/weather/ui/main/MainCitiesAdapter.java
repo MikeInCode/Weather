@@ -19,22 +19,27 @@ import mike.weather.data.model.MainCity;
 
 public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.ViewHolder> {
 
-    private List<MainCity> mCitiesList;
+    private List<MainCity> citiesList;
 
     @Inject
     public MainCitiesAdapter() {
-        mCitiesList = new ArrayList<>();
+        citiesList = new ArrayList<>();
     }
 
-    public void setmCitiesList(List<MainCity> citiesList) {
-        mCitiesList.addAll(citiesList);
+    public void setCitiesList(List<MainCity> citiesList) {
+        this.citiesList = citiesList;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.city_name) TextView mCityName;
-        @BindView(R.id.country_name) TextView mCountryName;
-        @BindView(R.id.temperature) TextView mTemperature;
-        @BindView(R.id.condition_icon) ImageView mCondition;
+        @BindView(R.id.city_name)
+        TextView cityName;
+        @BindView(R.id.country_name)
+        TextView countryName;
+        @BindView(R.id.temperature)
+        TextView temperature;
+        @BindView(R.id.weather_icon)
+        ImageView weatherIcon;
 
         public ViewHolder(View view) {
             super(view);
@@ -51,14 +56,13 @@ public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //holder.mCityName.setText(mCitiesList.get(position).getmCityName());
-        //holder.mCountryName.setText(mCitiesList.get(position).getmCountryName());
-        //holder.mTemperature.setText(mCitiesList.get(position).getmTemperature());
-        //holder.mCondition.setImageResource(mCitiesList.get(position).getmConditionImage());
+        holder.cityName.setText(citiesList.get(position).getName());
+        holder.countryName.setText(citiesList.get(position).getCountry());
+        holder.temperature.setText(citiesList.get(position).getTemperature());
     }
 
     @Override
     public int getItemCount() {
-        return mCitiesList.size();
+        return citiesList.size();
     }
 }

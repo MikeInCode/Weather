@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
-import mike.weather.data.remote.WeatherApi;
+import mike.weather.data.model.SearchCity;
 import mike.weather.injection.module.SearchActivityModule;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityContract.View,
@@ -74,12 +75,12 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
-    public void onItemClick(WeatherApi.SearchCity searchCity) {
+    public void onItemClick(SearchCity searchCity) {
         presenter.cityClicked(searchCity);
     }
 
     @Override
-    public void showSuggestedCitiesList(List<WeatherApi.SearchCity> suggestedList) {
+    public void showSuggestedCitiesList(List<SearchCity> suggestedList) {
         adapter.setSuggestedCitiesList(suggestedList);
     }
 
@@ -96,6 +97,16 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     @Override
     public void hideCityNotFoundMessage() {
         cityNotFoundMessage.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showServerErrorToast() {
+        Toast.makeText(this, "Server error!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showInternetErrorToast() {
+        Toast.makeText(this, "Internet connection error!", Toast.LENGTH_LONG).show();
     }
 
     @Override

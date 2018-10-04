@@ -14,11 +14,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.remote.WeatherApi;
+import mike.weather.data.model.SearchCity;
 
 public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapter.ViewHolder> {
 
-    private List<WeatherApi.SearchCity> suggestedCitiesList;
+    private List<SearchCity> suggestedCitiesList;
     private onItemClickListener onItemClickListener;
 
     @Inject
@@ -27,14 +27,14 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     }
 
     interface onItemClickListener {
-        void onItemClick(WeatherApi.SearchCity searchCity);
+        void onItemClick(SearchCity searchCity);
     }
 
     public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setSuggestedCitiesList(List<WeatherApi.SearchCity> suggestedCitiesList) {
+    public void setSuggestedCitiesList(List<SearchCity> suggestedCitiesList) {
         this.suggestedCitiesList = suggestedCitiesList;
         notifyDataSetChanged();
     }
@@ -63,7 +63,7 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        WeatherApi.SearchCity city = suggestedCitiesList.get(position);
+        SearchCity city = suggestedCitiesList.get(position);
         String suggestion = city.getName() + ", "
                 + city.getArea().getId() + ", "
                 + city.getCountry().getName();
