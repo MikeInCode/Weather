@@ -12,17 +12,16 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import mike.weather.data.model.MainCity;
-import mike.weather.data.model.SearchCity;
+import mike.weather.data.model.City;
 
 @Singleton
 public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
 
     private static final String TABLE_CITIES = "cities";
     private static final String COLUMN_ID = "id";
-    private static final String COLUMN_API_KEY = "api_key";
+    private static final String COLUMN_API_ID = "api_id";
     private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_COUNTRY = "country";
+    private static final String COLUMN_COUNTRY_CODE = "country_code";
 
 
     @Inject
@@ -34,14 +33,14 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
     public void onCreate(SQLiteDatabase db) {
         String createQuery = "CREATE TABLE " + TABLE_CITIES + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY, "
-                + COLUMN_API_KEY + " INTEGER UNIQUE, "
+                + COLUMN_API_ID + " INTEGER UNIQUE, "
                 + COLUMN_NAME + " TEXT, "
-                + COLUMN_COUNTRY + " TEXT)";
+                + COLUMN_COUNTRY_CODE + " TEXT)";
 
         String initialDataQuery = "INSERT INTO " + TABLE_CITIES + " ("
-                + COLUMN_API_KEY + ", "
+                + COLUMN_API_ID + ", "
                 + COLUMN_NAME + ", "
-                + COLUMN_COUNTRY + ") VALUES (328328, 'London', 'United Kingdom')";
+                + COLUMN_COUNTRY_CODE + ") VALUES (2643743, 'London', 'GB')";
 
         db.execSQL(createQuery);
         db.execSQL(initialDataQuery);
@@ -54,23 +53,23 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void insertCity(SearchCity searchCity) {
+    public void insertCity(City city) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_API_KEY, searchCity.getKey());
-        values.put(COLUMN_NAME, searchCity.getName());
-        values.put(COLUMN_COUNTRY, searchCity.getCountry().getName());
+        values.put(COLUMN_API_ID, city.getId());
+        values.put(COLUMN_NAME, city.getName());
+        values.put(COLUMN_COUNTRY_CODE, city.getCountryCode());
         db.insert(TABLE_CITIES, null, values);
         db.close();
     }
 
     @Override
-    public List<MainCity> readAllCities() {
+    public List<City> readAllCities() {
         SQLiteDatabase db = getWritableDatabase();
         String[] projection = {
-                COLUMN_API_KEY,
+                COLUMN_API_ID,
                 COLUMN_NAME,
-                COLUMN_COUNTRY
+                COLUMN_COUNTRY_CODE
         };
 
         Cursor cursor = db.query(
@@ -82,12 +81,12 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
                 null,
                 null);
 
-        List<MainCity> citiesList = new ArrayList<>();
+        List<City> citiesList = new ArrayList<>();
         while (cursor.moveToNext()) {
-            citiesList.add(new MainCity(
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_API_KEY)),
+            citiesList.add(new City(
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_API_ID)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY))));
+                    new City.CountryInfo(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY_CODE)))));
         }
         cursor.close();
         return citiesList;

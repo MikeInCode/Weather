@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,13 +19,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
-import mike.weather.data.model.MainCity;
-import mike.weather.data.remote.WeatherApi;
+import mike.weather.data.model.City;
 import mike.weather.injection.module.MainActivityModule;
 import mike.weather.ui.search.SearchActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
 
@@ -33,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     MainActivityContract.Presenter presenter;
     @Inject
     MainCitiesAdapter adapter;
-    @Inject
-    WeatherApi weatherApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
-    public void showCitiesList(List<MainCity> citiesList) {
+    public void showCitiesList(List<City> citiesList) {
         adapter.setCitiesList(citiesList);
     }
 

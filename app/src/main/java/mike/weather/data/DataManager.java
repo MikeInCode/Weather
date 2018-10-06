@@ -1,11 +1,11 @@
 package mike.weather.data;
 
-import mike.weather.data.model.SearchCity;
+import mike.weather.data.model.City;
 import mike.weather.ui.main.MainActivityPresenter;
 import mike.weather.ui.search.SearchActivityPresenter;
 
 public interface DataManager {
-    void getSuggestedCitiesList(String searchingQuery, SearchActivityPresenter.Callback callback);
-    void addCityToDb(SearchCity searchCity);
+    void getSuggestedCitiesList(String searchingPhrase, SearchActivityPresenter.Callback callback);
+    void addCityToDb(City cityToAdd);
     void getMainCitiesList(MainActivityPresenter.Callback callback);
 }

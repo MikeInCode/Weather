@@ -5,7 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mike.weather.data.DataManager;
-import mike.weather.data.model.SearchCity;
+import mike.weather.data.model.City;
 import mike.weather.ui.base.BaseError;
 
 public class SearchActivityPresenter implements SearchActivityContract.Presenter {
@@ -19,7 +19,7 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     }
 
     public interface Callback extends BaseError {
-        void onSuccess(List<SearchCity> suggestedList);
+        void onSuccess(List<City> suggestedList);
     }
 
     @Override
@@ -33,11 +33,11 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     }
 
     @Override
-    public void updateSuggestedCitiesList(String searchingQuery) {
-        if (searchingQuery.length() > 0) {
-            dataManager.getSuggestedCitiesList(searchingQuery, new Callback() {
+    public void updateSuggestedCitiesList(String searchingPhrase) {
+        if (searchingPhrase.length() > 2) {
+            dataManager.getSuggestedCitiesList(searchingPhrase, new Callback() {
                 @Override
-                public void onSuccess(List<SearchCity> suggestedList) {
+                public void onSuccess(List<City> suggestedList) {
                     if (!suggestedList.isEmpty()) {
                         view.showSuggestedCitiesList(suggestedList);
                         view.hideCityNotFoundMessage();
@@ -57,15 +57,18 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
                     view.showInternetErrorToast();
                 }
             });
-        } else {
+        } else if (searchingPhrase.length() == 0) {
             view.hideSuggestedCitiesList();
             view.hideCityNotFoundMessage();
+        } else {
+            view.hideSuggestedCitiesList();
+            view.showCityNotFoundMessage();
         }
     }
 
     @Override
-    public void cityClicked(SearchCity searchCity) {
-        dataManager.addCityToDb(searchCity);
+    public void cityClicked(City cityToAdd) {
+        dataManager.addCityToDb(cityToAdd);
         view.goBack();
     }
 

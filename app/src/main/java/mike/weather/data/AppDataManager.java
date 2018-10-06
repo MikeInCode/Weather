@@ -6,10 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import mike.weather.data.local.DbHelper;
-import mike.weather.data.model.MainCity;
+import mike.weather.data.model.City;
 import mike.weather.data.remote.ApiHelper;
-import mike.weather.data.model.SearchCity;
-import mike.weather.data.model.CurrentConditions;
 import mike.weather.ui.main.MainActivityPresenter;
 import mike.weather.ui.search.SearchActivityPresenter;
 
@@ -26,10 +24,10 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getSuggestedCitiesList(String searchingQuery, SearchActivityPresenter.Callback callback) {
-        apiHelper.makeCitySearchQuery(searchingQuery, new SearchActivityPresenter.Callback() {
+    public void getSuggestedCitiesList(String searchingPhrase, SearchActivityPresenter.Callback callback) {
+        apiHelper.makeCitySearchQuery(searchingPhrase, new SearchActivityPresenter.Callback() {
             @Override
-            public void onSuccess(List<SearchCity> suggestedList) {
+            public void onSuccess(List<City> suggestedList) {
                 callback.onSuccess(suggestedList);
             }
 
@@ -43,36 +41,44 @@ public class AppDataManager implements DataManager {
                 callback.onInternetError();
             }
         });
+
     }
 
     @Override
-    public void addCityToDb(SearchCity searchCity) {
-        dbHelper.insertCity(searchCity);
+    public void addCityToDb(City cityToAdd) {
+        dbHelper.insertCity(cityToAdd);
     }
 
     @Override
     public void getMainCitiesList(MainActivityPresenter.Callback callback) {
-        List<MainCity> mainCitiesList = dbHelper.readAllCities();
-        for (MainCity city : mainCitiesList) {
-            apiHelper.makeCurrentConditionsQuery(city.getKey(), new MainActivityPresenter.Callback() {
-                @Override
-                public void onSuccess(List<CurrentConditions> currentConditions, List<MainCity> citiesList) {
-                    city.setTemperature(currentConditions.get(0).getTemperature().getMetric().getDegrees());
-                    callback.onSuccess(null, mainCitiesList);
-                }
+        List<City> mainCitiesList = dbHelper.readAllCities();
+        String citiesIds = buildCitiesIds(mainCitiesList);
+        apiHelper.makeCurrentConditionsQuery(citiesIds, "metric", new MainActivityPresenter.Callback() {
+            @Override
+            public void onSuccess(List<City> updatedCitiesList) {
+                callback.onSuccess(updatedCitiesList);
+            }
 
-                @Override
-                public void onServerError(List<MainCity> citiesList) {
-                    city.setTemperature("--");
-                    callback.onServerError(mainCitiesList);
-                }
+            @Override
+            public void onServerError(List<City> oldCitiesList) {
+                callback.onServerError(mainCitiesList);
+            }
 
-                @Override
-                public void onInternetError(List<MainCity> citiesList) {
-                    city.setTemperature("--");
-                    callback.onInternetError(mainCitiesList);
-                }
-            });
+            @Override
+            public void onInternetError(List<City> oldCitiesList) {
+                callback.onInternetError(mainCitiesList);
+            }
+        });
+    }
+
+    private String buildCitiesIds(List<City> citiesList) {
+        StringBuilder citiesIds = new StringBuilder();
+        for (int i = 0; i < citiesList.size(); i++) {
+            citiesIds.append(citiesList.get(i).getId());
+            if (i < citiesList.size() - 1) {
+                citiesIds.append(",");
+            }
         }
+        return citiesIds.toString();
     }
 }

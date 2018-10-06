@@ -14,11 +14,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.SearchCity;
+import mike.weather.data.model.City;
 
 public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapter.ViewHolder> {
 
-    private List<SearchCity> suggestedCitiesList;
+    private List<City> suggestedCitiesList;
     private onItemClickListener onItemClickListener;
 
     @Inject
@@ -27,14 +27,14 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     }
 
     interface onItemClickListener {
-        void onItemClick(SearchCity searchCity);
+        void onItemClick(City cityToAdd);
     }
 
     public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setSuggestedCitiesList(List<SearchCity> suggestedCitiesList) {
+    public void setSuggestedCitiesList(List<City> suggestedCitiesList) {
         this.suggestedCitiesList = suggestedCitiesList;
         notifyDataSetChanged();
     }
@@ -63,12 +63,8 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        SearchCity city = suggestedCitiesList.get(position);
-        String suggestion = city.getName() + ", "
-                + city.getArea().getId() + ", "
-                + city.getCountry().getName();
-        holder.suggestedCity.setText(suggestion);
-
+        City city = suggestedCitiesList.get(position);
+        holder.suggestedCity.setText(city.toString());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

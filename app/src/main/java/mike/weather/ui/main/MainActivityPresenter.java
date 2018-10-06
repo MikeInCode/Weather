@@ -5,8 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mike.weather.data.DataManager;
-import mike.weather.data.model.MainCity;
-import mike.weather.data.model.CurrentConditions;
+import mike.weather.data.model.City;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
     private MainActivityContract.View view;
@@ -18,9 +17,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     }
 
     public interface Callback {
-        void onSuccess(List<CurrentConditions> currentConditions, List<MainCity> updatedCitiesList);
-        void onServerError(List<MainCity> oldCitiesList);
-        void onInternetError(List<MainCity> oldCitiesList);
+        void onSuccess(List<City> updatedCitiesList);
+        void onServerError(List<City> oldCitiesList);
+        void onInternetError(List<City> oldCitiesList);
     }
 
     @Override
@@ -37,18 +36,18 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public void updateCitiesList() {
         dataManager.getMainCitiesList(new Callback() {
             @Override
-            public void onSuccess(List<CurrentConditions> conditions, List<MainCity> updatedCitiesList) {
+            public void onSuccess(List<City> updatedCitiesList) {
                 view.showCitiesList(updatedCitiesList);
             }
 
             @Override
-            public void onServerError(List<MainCity> oldCitiesList) {
+            public void onServerError(List<City> oldCitiesList) {
                 view.showCitiesList(oldCitiesList);
                 view.showServerErrorToast();
             }
 
             @Override
-            public void onInternetError(List<MainCity> oldCitiesList) {
+            public void onInternetError(List<City> oldCitiesList) {
                 view.showCitiesList(oldCitiesList);
                 view.showInternetErrorToast();
             }

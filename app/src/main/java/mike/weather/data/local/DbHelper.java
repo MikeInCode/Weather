@@ -2,10 +2,9 @@ package mike.weather.data.local;
 
 import java.util.List;
 
-import mike.weather.data.model.MainCity;
-import mike.weather.data.model.SearchCity;
+import mike.weather.data.model.City;
 
 public interface DbHelper {
-    void insertCity(SearchCity searchCity);
-    List<MainCity> readAllCities();
+    void insertCity(City city);
+    List<City> readAllCities();
 }

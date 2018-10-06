@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
-import mike.weather.data.model.SearchCity;
+import mike.weather.data.model.City;
 import mike.weather.injection.module.SearchActivityModule;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityContract.View,
@@ -75,12 +75,12 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
-    public void onItemClick(SearchCity searchCity) {
-        presenter.cityClicked(searchCity);
+    public void onItemClick(City cityToAdd) {
+        presenter.cityClicked(cityToAdd);
     }
 
     @Override
-    public void showSuggestedCitiesList(List<SearchCity> suggestedList) {
+    public void showSuggestedCitiesList(List<City> suggestedList) {
         adapter.setSuggestedCitiesList(suggestedList);
     }
 

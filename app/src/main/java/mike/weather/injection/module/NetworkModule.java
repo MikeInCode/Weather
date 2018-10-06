@@ -6,7 +6,6 @@ import dagger.Module;
 import dagger.Provides;
 import mike.weather.data.remote.ApiHelper;
 import mike.weather.data.remote.AppApiHelper;
-import mike.weather.data.remote.WeatherApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -22,7 +21,7 @@ public class NetworkModule {
     @Singleton
     Retrofit provideRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl("https://dataservice.accuweather.com/")
+                .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
