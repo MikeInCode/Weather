@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import mike.weather.data.remote.ApiHelper;
 import mike.weather.data.remote.AppApiHelper;
+import mike.weather.data.remote.WeatherApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

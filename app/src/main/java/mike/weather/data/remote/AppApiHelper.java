@@ -3,11 +3,13 @@ package mike.weather.data.remote;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import mike.weather.data.model.Response;
+import mike.weather.data.model.ApiResponse;
 import mike.weather.ui.main.MainActivityPresenter;
 import mike.weather.ui.search.SearchActivityPresenter;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
+
 
 @Singleton
 public class AppApiHelper implements ApiHelper {
@@ -21,9 +23,9 @@ public class AppApiHelper implements ApiHelper {
 
     @Override
     public void makeCitySearchQuery(String searchingPhrase, SearchActivityPresenter.Callback callback) {
-        weatherApi.getSearchingResult(searchingPhrase, WeatherApi.apiKey).enqueue(new Callback<Response>() {
+        weatherApi.getSearchingResult(searchingPhrase, WeatherApi.apiKey).enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body().getCitiesList());
                 } else {
@@ -32,7 +34,7 @@ public class AppApiHelper implements ApiHelper {
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
                 callback.onInternetError();
             }
         });
@@ -40,9 +42,9 @@ public class AppApiHelper implements ApiHelper {
 
     @Override
     public void makeCurrentConditionsQuery(String citiesIds, String units, MainActivityPresenter.Callback callback) {
-        weatherApi.getCurrentCityConditions(citiesIds, units, WeatherApi.apiKey).enqueue(new Callback<Response>() {
+        weatherApi.getCurrentCityConditions(citiesIds, units, WeatherApi.apiKey).enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body().getCitiesList());
                 } else {
@@ -51,7 +53,7 @@ public class AppApiHelper implements ApiHelper {
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
                 callback.onInternetError(null);
             }
         });
