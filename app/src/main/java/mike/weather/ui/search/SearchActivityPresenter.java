@@ -68,7 +68,9 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
 
     @Override
     public void cityClicked(City cityToAdd) {
-        dataManager.addCityToDb(cityToAdd);
+        if (!dataManager.addCityToDb(cityToAdd)) {
+            view.showCitiesLimitToast();
+        }
         view.goBack();
     }
 

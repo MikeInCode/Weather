@@ -2,14 +2,13 @@ package mike.weather.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,10 +22,13 @@ import mike.weather.data.model.City;
 import mike.weather.injection.module.MainActivityModule;
 import mike.weather.ui.search.SearchActivity;
 
-public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
+public class MainActivity extends AppCompatActivity implements MainActivityContract.View,
+        SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.cites_recycler_view)
     RecyclerView citiesRecyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Inject
     MainActivityContract.Presenter presenter;
     @Inject
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         citiesRecyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.end_color);
 
         presenter.attach(this);
     }
@@ -56,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     protected void onDestroy() {
         super.onDestroy();
         presenter.detach();
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.updateCitiesList();
     }
 
     @OnClick(R.id.add_city_btn)
@@ -76,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     public void showInternetErrorToast() {
         Toast.makeText(this, "Internet connection error!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void hideRefreshingStatus() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

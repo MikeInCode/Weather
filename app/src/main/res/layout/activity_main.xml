@@ -6,73 +6,115 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cites_recycler_view"
-        android:layout_width="match_parent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@+id/add_city_btn"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cites_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
-    <TextView
-        android:id="@+id/last_update_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Last update: 19/09 09:00"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/add_city_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/add_city_btn" />
+        </android.support.v7.widget.RecyclerView>
 
-    <ImageButton
-        android:id="@+id/add_city_btn"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginBottom="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add"
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/celsius"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:text="@string/celcius"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/switch_measurement"
-        app:layout_constraintEnd_toStartOf="@+id/switch_measurement"
-        app:layout_constraintTop_toTopOf="@+id/switch_measurement"
-        app:layout_constraintVertical_bias="1.0" />
+        <TextView
+            android:id="@+id/last_update_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/updated"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/switch_measurement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fahrenheit"
-        app:layout_constraintEnd_toStartOf="@+id/fahrenheit"
-        app:layout_constraintTop_toTopOf="@+id/fahrenheit" />
+        <TextView
+            android:id="@+id/last_update_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/last_update_text"
+            app:layout_constraintStart_toEndOf="@+id/last_update_text"
+            tools:text="07.10.18 20:00" />
 
-    <TextView
-        android:id="@+id/fahrenheit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/fahrenheit"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/add_city_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/add_city_btn" />
+        <ImageButton
+            android:id="@+id/add_city_btn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/celsius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/celsius"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/switch_units"
+                app:layout_constraintEnd_toStartOf="@+id/switch_units"
+                app:layout_constraintTop_toTopOf="@+id/switch_units" />
+
+            <Switch
+                android:id="@+id/switch_units"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/fahrenheit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/fahrenheit"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/switch_units"
+                app:layout_constraintStart_toEndOf="@+id/switch_units"
+                app:layout_constraintTop_toTopOf="@+id/switch_units" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

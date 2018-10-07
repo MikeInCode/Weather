@@ -5,6 +5,6 @@ import java.util.List;
 import mike.weather.data.model.City;
 
 public interface DbHelper {
-    void insertCity(City city);
+    boolean insertCity(City city);
     List<City> readAllCities();
 }

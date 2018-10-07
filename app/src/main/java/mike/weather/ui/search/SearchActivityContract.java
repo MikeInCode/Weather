@@ -13,6 +13,7 @@ public interface SearchActivityContract {
         void hideCityNotFoundMessage();
         void showServerErrorToast();
         void showInternetErrorToast();
+        void showCitiesLimitToast();
         void goBack();
     }
 

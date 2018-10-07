@@ -3,6 +3,7 @@ package mike.weather.data.local;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -53,14 +54,19 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void insertCity(City city) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_API_ID, city.getId());
-        values.put(COLUMN_NAME, city.getName());
-        values.put(COLUMN_COUNTRY_CODE, city.getCountryCode());
-        db.insert(TABLE_CITIES, null, values);
-        db.close();
+    public boolean insertCity(City city) {
+        if (getFieldsCount(TABLE_CITIES) < 20) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_API_ID, city.getId());
+            values.put(COLUMN_NAME, city.getName());
+            values.put(COLUMN_COUNTRY_CODE, city.getCountryCode());
+            db.insert(TABLE_CITIES, null, values);
+            db.close();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -90,5 +96,12 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
         }
         cursor.close();
         return citiesList;
+    }
+
+    private long getFieldsCount(String tableName) {
+        SQLiteDatabase db = getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, tableName);
+        db.close();
+        return count;
     }
 }

@@ -52,6 +52,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 view.showInternetErrorToast();
             }
         });
+        view.hideRefreshingStatus();
     }
 
     @Override

@@ -10,6 +10,7 @@ public interface MainActivityContract {
         void showCitiesList(List<City> citiesList);
         void showServerErrorToast();
         void showInternetErrorToast();
+        void hideRefreshingStatus();
         void goToSearch();
     }
 

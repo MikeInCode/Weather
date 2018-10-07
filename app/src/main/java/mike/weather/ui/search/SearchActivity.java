@@ -110,6 +110,11 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
+    public void showCitiesLimitToast() {
+        Toast.makeText(this, "Max cities count is 20!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void goBack() {
         onBackPressed();
     }

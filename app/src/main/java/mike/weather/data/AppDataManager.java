@@ -41,12 +41,11 @@ public class AppDataManager implements DataManager {
                 callback.onInternetError();
             }
         });
-
     }
 
     @Override
-    public void addCityToDb(City cityToAdd) {
-        dbHelper.insertCity(cityToAdd);
+    public boolean addCityToDb(City cityToAdd) {
+        return dbHelper.insertCity(cityToAdd);
     }
 
     @Override

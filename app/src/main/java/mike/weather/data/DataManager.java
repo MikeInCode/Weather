@@ -6,6 +6,6 @@ import mike.weather.ui.search.SearchActivityPresenter;
 
 public interface DataManager {
     void getSuggestedCitiesList(String searchingPhrase, SearchActivityPresenter.Callback callback);
-    void addCityToDb(City cityToAdd);
+    boolean addCityToDb(City cityToAdd);
     void getMainCitiesList(MainActivityPresenter.Callback callback);
 }
