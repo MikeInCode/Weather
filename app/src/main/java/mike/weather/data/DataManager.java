@@ -8,4 +8,6 @@ public interface DataManager {
     void getSuggestedCitiesList(String searchingPhrase, SearchActivityPresenter.Callback callback);
     boolean addCityToDb(City cityToAdd);
     void getMainCitiesList(MainActivityPresenter.Callback callback);
+    boolean getUnitsSwitcherState();
+    void changeUnitsPreference();
 }

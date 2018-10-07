@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -29,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     RecyclerView citiesRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.last_update_date)
+    TextView lastUpdate;
+    @BindView(R.id.units_switcher)
+    SwitchCompat unitsSwitcher;
     @Inject
     MainActivityContract.Presenter presenter;
     @Inject
@@ -41,13 +48,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         ButterKnife.bind(this);
         App.getAppComponent().plus(new MainActivityModule()).inject(this);
 
+        presenter.attach(this);
+        presenter.setUnitsSwitcherState();
+
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         citiesRecyclerView.setAdapter(adapter);
+
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.end_color);
-
-        presenter.attach(this);
     }
 
     @Override
@@ -72,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         presenter.addCityBtnClicked();
     }
 
+    @OnClick(R.id.units_switcher)
+    public void unitsSwitcher() {
+        presenter.unitsSwitcherClicked();
+    }
+
     @Override
     public void showCitiesList(List<City> citiesList) {
         adapter.setCitiesList(citiesList);
@@ -90,6 +104,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     public void hideRefreshingStatus() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showLastUpdateDate(String date) {
+        lastUpdate.setText(date);
+    }
+
+    @Override
+    public void showUnitsSwitcherState(boolean state) {
+        unitsSwitcher.setChecked(state);
     }
 
     @Override

@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import mike.weather.data.local.DbHelper;
+import mike.weather.data.local.PreferencesHelper;
 import mike.weather.data.model.City;
 import mike.weather.data.remote.ApiHelper;
 import mike.weather.ui.main.MainActivityPresenter;
@@ -16,11 +17,13 @@ public class AppDataManager implements DataManager {
 
     private ApiHelper apiHelper;
     private DbHelper dbHelper;
+    private PreferencesHelper preferencesHelper;
 
     @Inject
-    public AppDataManager(ApiHelper apiHelper, DbHelper dbHelper) {
+    public AppDataManager(ApiHelper apiHelper, DbHelper dbHelper, PreferencesHelper preferencesHelper) {
         this.apiHelper = apiHelper;
         this.dbHelper = dbHelper;
+        this.preferencesHelper = preferencesHelper;
     }
 
     @Override
@@ -52,22 +55,23 @@ public class AppDataManager implements DataManager {
     public void getMainCitiesList(MainActivityPresenter.Callback callback) {
         List<City> mainCitiesList = dbHelper.readAllCities();
         String citiesIds = buildCitiesIds(mainCitiesList);
-        apiHelper.makeCurrentConditionsQuery(citiesIds, "metric", new MainActivityPresenter.Callback() {
-            @Override
-            public void onSuccess(List<City> updatedCitiesList) {
-                callback.onSuccess(updatedCitiesList);
-            }
+        apiHelper.makeCurrentConditionsQuery(citiesIds, preferencesHelper.getBaseUnits(),
+                new MainActivityPresenter.Callback() {
+                    @Override
+                    public void onSuccess(List<City> updatedCitiesList) {
+                        callback.onSuccess(updatedCitiesList);
+                    }
 
-            @Override
-            public void onServerError(List<City> oldCitiesList) {
-                callback.onServerError(mainCitiesList);
-            }
+                    @Override
+                    public void onServerError(List<City> oldCitiesList) {
+                        callback.onServerError(mainCitiesList);
+                    }
 
-            @Override
-            public void onInternetError(List<City> oldCitiesList) {
-                callback.onInternetError(mainCitiesList);
-            }
-        });
+                    @Override
+                    public void onInternetError(List<City> oldCitiesList) {
+                        callback.onInternetError(mainCitiesList);
+                    }
+                });
     }
 
     private String buildCitiesIds(List<City> citiesList) {
@@ -79,5 +83,19 @@ public class AppDataManager implements DataManager {
             }
         }
         return citiesIds.toString();
+    }
+
+    @Override
+    public boolean getUnitsSwitcherState() {
+        return !preferencesHelper.getBaseUnits().equals("metric");
+     }
+
+    @Override
+    public void changeUnitsPreference() {
+        if (preferencesHelper.getBaseUnits().equals("metric")) {
+            preferencesHelper.setBaseUnits("imperial");
+        } else {
+            preferencesHelper.setBaseUnits("metric");
+        }
     }
 }

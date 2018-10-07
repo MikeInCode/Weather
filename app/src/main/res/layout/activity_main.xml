@@ -51,10 +51,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:text="@string/update_date_empty"
             android:textSize="12sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/last_update_text"
-            app:layout_constraintStart_toEndOf="@+id/last_update_text"
-            tools:text="07.10.18 20:00" />
+            app:layout_constraintStart_toEndOf="@+id/last_update_text" />
 
         <ImageButton
             android:id="@+id/add_city_btn"
@@ -89,12 +89,12 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/celsius"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/switch_units"
-                app:layout_constraintEnd_toStartOf="@+id/switch_units"
-                app:layout_constraintTop_toTopOf="@+id/switch_units" />
+                app:layout_constraintBottom_toBottomOf="@+id/units_switcher"
+                app:layout_constraintEnd_toStartOf="@+id/units_switcher"
+                app:layout_constraintTop_toTopOf="@+id/units_switcher" />
 
-            <Switch
-                android:id="@+id/switch_units"
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/units_switcher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,9 +109,9 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/fahrenheit"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/switch_units"
-                app:layout_constraintStart_toEndOf="@+id/switch_units"
-                app:layout_constraintTop_toTopOf="@+id/switch_units" />
+                app:layout_constraintBottom_toBottomOf="@+id/units_switcher"
+                app:layout_constraintStart_toEndOf="@+id/units_switcher"
+                app:layout_constraintTop_toTopOf="@+id/units_switcher" />
 
         </android.support.constraint.ConstraintLayout>
 

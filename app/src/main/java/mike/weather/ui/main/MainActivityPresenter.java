@@ -1,5 +1,8 @@
 package mike.weather.ui.main;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,7 +21,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     public interface Callback {
         void onSuccess(List<City> updatedCitiesList);
+
         void onServerError(List<City> oldCitiesList);
+
         void onInternetError(List<City> oldCitiesList);
     }
 
@@ -38,6 +43,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             @Override
             public void onSuccess(List<City> updatedCitiesList) {
                 view.showCitiesList(updatedCitiesList);
+                view.showLastUpdateDate(DateTime.now().toString(DateTimeFormat.forPattern("M/d h:mm a")));
             }
 
             @Override
@@ -58,5 +64,16 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     @Override
     public void addCityBtnClicked() {
         view.goToSearch();
+    }
+
+    @Override
+    public void setUnitsSwitcherState() {
+        view.showUnitsSwitcherState(dataManager.getUnitsSwitcherState());
+    }
+
+    @Override
+    public void unitsSwitcherClicked() {
+        dataManager.changeUnitsPreference();
+        updateCitiesList();
     }
 }

@@ -11,11 +11,15 @@ public interface MainActivityContract {
         void showServerErrorToast();
         void showInternetErrorToast();
         void hideRefreshingStatus();
+        void showLastUpdateDate(String date);
+        void showUnitsSwitcherState(boolean state);
         void goToSearch();
     }
 
     interface Presenter extends BasePresenter<View> {
         void updateCitiesList();
         void addCityBtnClicked();
+        void setUnitsSwitcherState();
+        void unitsSwitcherClicked();
     }
 }
