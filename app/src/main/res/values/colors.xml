@@ -3,6 +3,6 @@
     <color name="color_accent">#1396ce</color>
     <color name="white">@android:color/white</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="end_color">#45c7ff</color>
-    <color name="start_color">#5bceff</color>
+    <color name="end_color">#6d9cd9</color>
+    <color name="start_color">#80afdc</color>
 </resources>

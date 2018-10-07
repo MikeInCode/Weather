@@ -95,11 +95,13 @@ public class City {
     }
 
     public static class WeatherCondition {
+        @SerializedName("id")
+        private String weatherConditionId;
         @SerializedName("icon")
-        private String weatherIconValue;
+        private String weatherIconId;
 
         public int getWeatherIcon() {
-            return WeatherImageSelector.getImageResource(weatherIconValue);
+            return WeatherImageSelector.getImageResource(weatherConditionId, weatherIconId);
         }
     }
 }
