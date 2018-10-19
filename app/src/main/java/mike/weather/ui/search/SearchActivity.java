@@ -2,12 +2,17 @@ package mike.weather.ui.search;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxSearchView;
 
 import java.util.List;
 
@@ -15,14 +20,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.City;
 import mike.weather.injection.module.SearchActivityModule;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityContract.View,
-        SearchView.OnQueryTextListener, SearchCitiesAdapter.onItemClickListener {
+        SearchCitiesAdapter.onItemClickListener {
 
     @BindView(R.id.cites_recycler_view)
     RecyclerView citiesRecyclerView;
@@ -30,6 +34,8 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     SearchView searchView;
     @BindView(R.id.city_not_found)
     TextView cityNotFoundMessage;
+    @BindView(R.id.back_btn)
+    ImageButton backBtn;
     @Inject
     SearchActivityContract.Presenter presenter;
     @Inject
@@ -42,14 +48,15 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
         ButterKnife.bind(this);
         App.getAppComponent().plus(new SearchActivityModule()).inject(this);
 
+        presenter.attach(this);
+        presenter.setTextChangeObservable(RxSearchView.queryTextChanges(searchView));
+        presenter.setBackBtnObservable(RxView.clicks(backBtn));
+
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         citiesRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
-
-        presenter.attach(this);
-
         searchView.onActionViewExpanded();
-        searchView.setOnQueryTextListener(this);
     }
 
     @Override
@@ -59,34 +66,14 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
-    public boolean onQueryTextSubmit(String s) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        presenter.updateSuggestedCitiesList(s);
-        return false;
-    }
-
-    @OnClick(R.id.back_btn)
-    public void backBtn() {
-        presenter.backBtnClicked();
-    }
-
-    @Override
-    public void onItemClick(City cityToAdd) {
-        presenter.cityClicked(cityToAdd);
-    }
-
-    @Override
     public void showSuggestedCitiesList(List<City> suggestedList) {
         adapter.setSuggestedCitiesList(suggestedList);
+        citiesRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideSuggestedCitiesList() {
-        adapter.clearSuggestedCitiesList();
+        citiesRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -100,22 +87,17 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
-    public void showServerErrorToast() {
-        Toast.makeText(this, "Server error!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showInternetErrorToast() {
-        Toast.makeText(this, "Internet connection error!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showCitiesLimitToast() {
-        Toast.makeText(this, "Max cities count is 20!", Toast.LENGTH_LONG).show();
+    public void showErrorToast(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void goBack() {
         onBackPressed();
+    }
+
+    @Override
+    public void onItemClick(City cityToAdd) {
+        presenter.cityClicked(cityToAdd);
     }
 }

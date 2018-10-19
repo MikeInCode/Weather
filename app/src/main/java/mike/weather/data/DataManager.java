@@ -1,13 +1,14 @@
 package mike.weather.data;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import mike.weather.data.model.City;
-import mike.weather.ui.main.MainActivityPresenter;
-import mike.weather.ui.search.SearchActivityPresenter;
+import mike.weather.data.model.ConditionsResponse;
+import mike.weather.data.model.SearchResponse;
 
 public interface DataManager {
-    void getSuggestedCitiesList(String searchingPhrase, SearchActivityPresenter.Callback callback);
-    boolean addCityToDb(City cityToAdd);
-    void getMainCitiesList(MainActivityPresenter.Callback callback);
-    boolean getUnitsSwitcherState();
-    void changeUnitsPreference();
+    Single<SearchResponse> getCitySearchResponse(String query);
+    void addCityToDb(City cityToAdd);
+    Observable<City> getCitiesFromDb();
+    Single<ConditionsResponse> getCityConditionsResponse(String cityQuery);
 }

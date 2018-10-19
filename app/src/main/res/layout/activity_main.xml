@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:theme="@style/ProgressBar"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="0dp"
@@ -28,33 +42,24 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/last_update_text"
+            android:id="@+id/aerisweather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/updated"
+            android:drawableStart="@drawable/ic_aerisweather"
+            android:text="@string/aerisweather_name"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/last_update_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@string/update_date_empty"
-            android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/last_update_text"
-            app:layout_constraintStart_toEndOf="@+id/last_update_text" />
 
         <ImageButton
             android:id="@+id/add_city_btn"
@@ -83,35 +88,38 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/celsius"
+                android:id="@+id/last_update_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/celsius"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/units_switcher"
-                app:layout_constraintEnd_toStartOf="@+id/units_switcher"
-                app:layout_constraintTop_toTopOf="@+id/units_switcher" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/units_switcher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginEnd="4dp"
+                android:text="@string/updated"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/last_update_date"
+                app:layout_constraintEnd_toStartOf="@+id/last_update_date" />
 
             <TextView
-                android:id="@+id/fahrenheit"
+                android:id="@+id/last_update_date"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:text="@string/update_date_empty"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/refresh_btn"
+                app:layout_constraintEnd_toStartOf="@+id/refresh_btn"
+                app:layout_constraintTop_toTopOf="@+id/refresh_btn" />
+
+            <ImageButton
+                android:id="@+id/refresh_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/fahrenheit"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/units_switcher"
-                app:layout_constraintStart_toEndOf="@+id/units_switcher"
-                app:layout_constraintTop_toTopOf="@+id/units_switcher" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_refresh"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 

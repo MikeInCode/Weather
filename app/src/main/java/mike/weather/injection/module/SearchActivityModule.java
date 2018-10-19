@@ -12,5 +12,4 @@ public class SearchActivityModule {
     SearchActivityContract.Presenter providePresenter(SearchActivityPresenter presenter) {
         return presenter;
     }
-
 }

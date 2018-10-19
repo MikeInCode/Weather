@@ -57,10 +57,10 @@ public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         City city = citiesList.get(position);
-        holder.cityName.setText(city.getName());
+        holder.cityName.setText(city.getCityName());
         holder.countryName.setText(city.getCountryName());
-        holder.temperature.setText(city.getCurrentTemp());
-        holder.weatherIcon.setImageResource(city.getConditionImage());
+        holder.temperature.setText(city.getTemp());
+        holder.weatherIcon.setImageResource(city.getIcon());
     }
 
     @Override

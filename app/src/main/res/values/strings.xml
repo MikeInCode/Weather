@@ -2,6 +2,8 @@
     <string name="app_name">Weather</string>
     <string name="celsius">°C</string>
     <string name="fahrenheit">°F</string>
-    <string name="updated">Updated:</string>
+    <string name="updated">Updated at</string>
     <string name="update_date_empty">--</string>
+    <string name="aerisweather_name">AerisWeather</string>
+    <string name="search_view_hint">Type city</string>
 </resources>

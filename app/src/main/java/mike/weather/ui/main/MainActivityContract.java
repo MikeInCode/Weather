@@ -2,24 +2,25 @@ package mike.weather.ui.main;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import mike.weather.data.model.City;
 import mike.weather.ui.base.BasePresenter;
+import mike.weather.ui.base.BaseView;
 
 public interface MainActivityContract {
-    interface View {
+    interface View extends BaseView {
         void showCitiesList(List<City> citiesList);
-        void showServerErrorToast();
-        void showInternetErrorToast();
+        void showDate(String date);
         void hideRefreshingStatus();
-        void showLastUpdateDate(String date);
-        void showUnitsSwitcherState(boolean state);
         void goToSearch();
+        void goToApiWebsite();
     }
 
     interface Presenter extends BasePresenter<View> {
-        void updateCitiesList();
-        void addCityBtnClicked();
-        void setUnitsSwitcherState();
-        void unitsSwitcherClicked();
+        void onPause();
+        void setCitiesList();
+        void setRefreshObservable(Observable<Object> observable);
+        void setAddBtnObservable(Observable<Object> observable);
+        void setAerisWeatherObservable(Observable<Object> observable);
     }
 }

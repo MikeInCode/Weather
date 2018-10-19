@@ -18,13 +18,11 @@ public class AppPreferencesHelper implements PreferencesHelper {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public void setBaseUnits(String units) {
-        if (units.equals("metric") || units.equals("imperial")) {
-            sharedPreferences.edit().putString(BASE_UNITS, units).apply();
-        }
+    public void setBaseUnits(boolean newValue) {
+        sharedPreferences.edit().putBoolean(BASE_UNITS, newValue).apply();
     }
 
-    public String getBaseUnits() {
-        return sharedPreferences.getString(BASE_UNITS, "metric");
+    public boolean getBaseUnits() {
+        return sharedPreferences.getBoolean(BASE_UNITS, false);
     }
 }

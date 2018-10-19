@@ -1,9 +1,10 @@
 package mike.weather.data.remote;
 
-import mike.weather.ui.main.MainActivityPresenter;
-import mike.weather.ui.search.SearchActivityPresenter;
+import io.reactivex.Single;
+import mike.weather.data.model.ConditionsResponse;
+import mike.weather.data.model.SearchResponse;
 
 public interface ApiHelper {
-    void makeCitySearchQuery(String searchingPhrase, SearchActivityPresenter.Callback callback);
-    void makeCurrentConditionsQuery(String citiesIds, String units, MainActivityPresenter.Callback callback);
+    Single<SearchResponse> makeCitySearchRequest(String query);
+    Single<ConditionsResponse> makeCurrentConditionsRequest(String cityQuery);
 }

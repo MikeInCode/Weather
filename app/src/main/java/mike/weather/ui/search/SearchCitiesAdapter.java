@@ -26,21 +26,8 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
         suggestedCitiesList = new ArrayList<>();
     }
 
-    interface onItemClickListener {
-        void onItemClick(City cityToAdd);
-    }
-
-    public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
     public void setSuggestedCitiesList(List<City> suggestedCitiesList) {
         this.suggestedCitiesList = suggestedCitiesList;
-        notifyDataSetChanged();
-    }
-
-    public void clearSuggestedCitiesList() {
-        suggestedCitiesList.clear();
         notifyDataSetChanged();
     }
 
@@ -65,16 +52,19 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         City city = suggestedCitiesList.get(position);
         holder.suggestedCity.setText(city.toString());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(city);
-            }
-        });
+        holder.itemView.setOnClickListener(l -> onItemClickListener.onItemClick(city));
     }
 
     @Override
     public int getItemCount() {
         return suggestedCitiesList.size();
+    }
+
+    interface onItemClickListener {
+        void onItemClick(City cityToAdd);
+    }
+
+    public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

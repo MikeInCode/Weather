@@ -1,25 +1,27 @@
 package mike.weather.ui.search;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import mike.weather.data.DataManager;
 import mike.weather.data.model.City;
-import mike.weather.ui.base.BaseError;
+import mike.weather.data.model.ErrorStateModel;
 
 public class SearchActivityPresenter implements SearchActivityContract.Presenter {
 
     private SearchActivityContract.View view;
     private DataManager dataManager;
+    private CompositeDisposable disposables;
 
     @Inject
-    public SearchActivityPresenter(DataManager dataManager) {
+    public SearchActivityPresenter(DataManager dataManager, CompositeDisposable disposables) {
         this.dataManager = dataManager;
-    }
-
-    public interface Callback extends BaseError {
-        void onSuccess(List<City> suggestedList);
+        this.disposables = disposables;
     }
 
     @Override
@@ -30,52 +32,50 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
     @Override
     public void detach() {
         view = null;
+        disposables.clear();
     }
 
     @Override
-    public void updateSuggestedCitiesList(String searchingPhrase) {
-        if (searchingPhrase.length() > 2) {
-            dataManager.getSuggestedCitiesList(searchingPhrase, new Callback() {
-                @Override
-                public void onSuccess(List<City> suggestedList) {
-                    if (!suggestedList.isEmpty()) {
-                        view.showSuggestedCitiesList(suggestedList);
-                        view.hideCityNotFoundMessage();
-                    } else {
-                        view.hideSuggestedCitiesList();
-                        view.showCityNotFoundMessage();
-                    }
-                }
+    public void setTextChangeObservable(Observable<CharSequence> observable) {
+        disposables.add(observable
+                .filter(query -> query.length() > 0)
+                .switchMapSingle(query -> dataManager.getCitySearchResponse(query.toString())
+                        .map(response -> {
+                            ErrorStateModel.setError(null);
+                            return response.getCitiesList();
+                        })
+                        .onErrorReturn(throwable -> {
+                            ErrorStateModel.setError(throwable);
+                            return new ArrayList<>();
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                )
+                .subscribe(
+                        list -> {
+                            if (!list.isEmpty()) {
+                                view.showSuggestedCitiesList(list);
+                                view.hideCityNotFoundMessage();
+                            } else {
+                                view.hideSuggestedCitiesList();
+                                view.showCityNotFoundMessage();
+                            }
+                            if (ErrorStateModel.isError()) {
+                                view.showErrorToast(ErrorStateModel.getErrorMessage());
+                            }
+                        })
+        );
+    }
 
-                @Override
-                public void onServerError() {
-                    view.showServerErrorToast();
-                }
-
-                @Override
-                public void onInternetError() {
-                    view.showInternetErrorToast();
-                }
-            });
-        } else if (searchingPhrase.length() == 0) {
-            view.hideSuggestedCitiesList();
-            view.hideCityNotFoundMessage();
-        } else {
-            view.hideSuggestedCitiesList();
-            view.showCityNotFoundMessage();
-        }
+    @Override
+    public void setBackBtnObservable(Observable<Object> observable) {
+        disposables.add(observable
+                .subscribe(a -> view.goBack()));
     }
 
     @Override
     public void cityClicked(City cityToAdd) {
-        if (!dataManager.addCityToDb(cityToAdd)) {
-            view.showCitiesLimitToast();
-        }
-        view.goBack();
-    }
-
-    @Override
-    public void backBtnClicked() {
+        dataManager.addCityToDb(cityToAdd);
         view.goBack();
     }
 }

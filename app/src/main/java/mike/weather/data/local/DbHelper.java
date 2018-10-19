@@ -1,10 +1,9 @@
 package mike.weather.data.local;
 
-import java.util.List;
-
+import io.reactivex.Observable;
 import mike.weather.data.model.City;
 
 public interface DbHelper {
-    boolean insertCity(City city);
-    List<City> readAllCities();
+    void insertCity(City city);
+    Observable<City> readAllCities();
 }
