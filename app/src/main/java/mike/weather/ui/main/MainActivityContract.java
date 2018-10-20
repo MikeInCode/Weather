@@ -12,6 +12,7 @@ public interface MainActivityContract {
         void showCitiesList(List<City> citiesList);
         void showDate(String date);
         void hideRefreshingStatus();
+        void deleteCityFromList(int position);
         void goToSearch();
         void goToApiWebsite();
     }
@@ -22,5 +23,6 @@ public interface MainActivityContract {
         void setRefreshObservable(Observable<Object> observable);
         void setAddBtnObservable(Observable<Object> observable);
         void setAerisWeatherObservable(Observable<Object> observable);
+        void itemSwipedToDelete(int position, City cityToDelete);
     }
 }

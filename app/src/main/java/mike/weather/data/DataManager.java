@@ -11,4 +11,5 @@ public interface DataManager {
     void addCityToDb(City cityToAdd);
     Observable<City> getCitiesFromDb();
     Single<ConditionsResponse> getCityConditionsResponse(String cityQuery);
+    void deleteCityFromDb(City cityToDelete);
 }

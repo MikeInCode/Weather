@@ -67,4 +67,13 @@ public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.Vi
     public int getItemCount() {
         return citiesList.size();
     }
+
+    public void removeItem(int position) {
+        citiesList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public City getItemAtPosition(int position) {
+        return citiesList.get(position);
+    }
 }

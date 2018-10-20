@@ -6,7 +6,6 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import mike.weather.data.local.DbHelper;
-import mike.weather.data.local.PreferencesHelper;
 import mike.weather.data.model.City;
 import mike.weather.data.model.ConditionsResponse;
 import mike.weather.data.model.SearchResponse;
@@ -16,13 +15,11 @@ import mike.weather.data.remote.ApiHelper;
 public class AppDataManager implements DataManager {
     private ApiHelper apiHelper;
     private DbHelper dbHelper;
-    private PreferencesHelper preferencesHelper;
 
     @Inject
-    public AppDataManager(ApiHelper apiHelper, DbHelper dbHelper, PreferencesHelper preferencesHelper) {
+    public AppDataManager(ApiHelper apiHelper, DbHelper dbHelper) {
         this.apiHelper = apiHelper;
         this.dbHelper = dbHelper;
-        this.preferencesHelper = preferencesHelper;
     }
 
     @Override
@@ -43,5 +40,10 @@ public class AppDataManager implements DataManager {
     @Override
     public Single<ConditionsResponse> getCityConditionsResponse(String cityQuery) {
         return apiHelper.makeCurrentConditionsRequest(cityQuery);
+    }
+
+    @Override
+    public void deleteCityFromDb(City cityToDelete) {
+        dbHelper.deleteCity(cityToDelete);
     }
 }

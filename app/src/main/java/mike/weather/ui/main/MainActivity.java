@@ -1,13 +1,17 @@
 package mike.weather.ui.main;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -23,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.City;
@@ -63,10 +68,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         presenter.setAddBtnObservable(RxView.clicks(addCityBtn));
         presenter.setAerisWeatherObservable(RxView.clicks(aerisWeather));
 
+        swipeRefreshLayout.setColorSchemeResources(R.color.color_primary);
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         citiesRecyclerView.setAdapter(adapter);
-        swipeRefreshLayout.setColorSchemeResources(R.color.color_primary);
+        initItemTouchHelper();
     }
 
     @Override
@@ -104,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
+    public void deleteCityFromList(int position) {
+        adapter.removeItem(position);
+    }
+
+    @Override
     public void goToSearch() {
         startActivity(new Intent(this, SearchActivity.class));
     }
@@ -116,5 +127,32 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     public void showErrorToast(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    private void initItemTouchHelper() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                int position = viewHolder.getAdapterPosition();
+                presenter.itemSwipedToDelete(position, adapter.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+                new RecyclerViewSwipeDecorator.Builder(MainActivity.this, c, recyclerView,
+                        viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.color_delete))
+                        .addActionIcon(R.drawable.ic_delete)
+                        .create()
+                        .decorate();
+            }
+        }).attachToRecyclerView(citiesRecyclerView);
     }
 }

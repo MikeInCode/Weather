@@ -5,6 +5,5 @@
     <color name="white">#ffffff</color>
     <color name="white_60">#99ffffff</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="gradient_end">@color/color_primary</color>
-    <color name="gradient_start">#6d90bf</color>
+    <color name="color_delete">#ba4c4c</color>
 </resources>

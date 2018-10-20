@@ -7,8 +7,6 @@ import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 import mike.weather.data.AppDataManager;
 import mike.weather.data.DataManager;
-import mike.weather.data.local.AppPreferencesHelper;
-import mike.weather.data.local.PreferencesHelper;
 
 @Module
 public class AppModule {
@@ -32,10 +30,5 @@ public class AppModule {
     @Provides
     DataManager provideDataManager(AppDataManager appDataManager) {
         return appDataManager;
-    }
-
-    @Provides
-    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
-        return appPreferencesHelper;
     }
 }

@@ -96,4 +96,12 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
         cursor.close();
         return Observable.fromIterable(citiesList);
     }
+
+    @Override
+    public void deleteCity(City city) {
+        SQLiteDatabase db = getWritableDatabase();
+        String selection = COLUMN_API_QUERY + " = '" + city.getQuery() + "'";
+        db.delete(TABLE_CITIES, selection, null);
+        db.close();
+    }
 }

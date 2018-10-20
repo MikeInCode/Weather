@@ -112,4 +112,10 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         disposables.add(observable
                 .subscribe(a -> view.goToApiWebsite()));
     }
+
+    @Override
+    public void itemSwipedToDelete(int position, City cityToDelete) {
+        view.deleteCityFromList(position);
+        dataManager.deleteCityFromDb(cityToDelete);
+    }
 }
