@@ -24,9 +24,10 @@ import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.City;
 import mike.weather.injection.module.SearchActivityModule;
+import mike.weather.ui.base.OnItemClickListener;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityContract.View,
-        SearchCitiesAdapter.onItemClickListener {
+        OnItemClickListener {
 
     @BindView(R.id.cites_recycler_view)
     RecyclerView citiesRecyclerView;
@@ -87,13 +88,13 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
-    public void showErrorToast(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+    public void goBack() {
+        onBackPressed();
     }
 
     @Override
-    public void goBack() {
-        onBackPressed();
+    public void showErrorToast(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override

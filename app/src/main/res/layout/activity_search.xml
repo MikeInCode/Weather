@@ -21,6 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:queryBackground="@null"
         android:queryHint="@string/search_view_hint"
         android:theme="@style/SearchView"
         app:layout_constraintBottom_toBottomOf="@+id/back_btn"

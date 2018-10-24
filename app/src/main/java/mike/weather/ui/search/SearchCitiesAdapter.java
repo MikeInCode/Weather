@@ -15,11 +15,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
 import mike.weather.data.model.City;
+import mike.weather.ui.base.OnItemClickListener;
 
 public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapter.ViewHolder> {
 
     private List<City> suggestedCitiesList;
-    private onItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
 
     @Inject
     public SearchCitiesAdapter() {
@@ -29,6 +30,10 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     public void setSuggestedCitiesList(List<City> suggestedCitiesList) {
         this.suggestedCitiesList = suggestedCitiesList;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,13 +63,5 @@ public class SearchCitiesAdapter extends RecyclerView.Adapter<SearchCitiesAdapte
     @Override
     public int getItemCount() {
         return suggestedCitiesList.size();
-    }
-
-    interface onItemClickListener {
-        void onItemClick(City cityToAdd);
-    }
-
-    public void setOnItemClickListener(SearchCitiesAdapter.onItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
     }
 }

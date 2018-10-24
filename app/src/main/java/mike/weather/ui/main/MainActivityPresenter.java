@@ -118,4 +118,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         view.deleteCityFromList(position);
         dataManager.deleteCityFromDb(cityToDelete);
     }
+
+    @Override
+    public void cityClicked(City city) {
+        view.goToDetailedInfo(city.getQuery());
+    }
 }

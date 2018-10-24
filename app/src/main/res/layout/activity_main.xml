@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:text="@string/updated"
+                android:text="@string/updated_at"
                 android:textSize="12sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/last_update_date"
                 app:layout_constraintEnd_toStartOf="@+id/last_update_date" />
@@ -103,11 +103,12 @@
                 android:layout_height="19dp"
                 android:layout_marginEnd="4dp"
                 android:gravity="center"
-                android:text="@string/update_date_empty"
+                android:text="@string/empty_data"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/refresh_btn"
                 app:layout_constraintEnd_toStartOf="@+id/refresh_btn"
-                app:layout_constraintTop_toTopOf="@+id/refresh_btn" />
+                app:layout_constraintTop_toTopOf="@+id/refresh_btn"
+                tools:text="11:30 PM" />
 
             <ImageButton
                 android:id="@+id/refresh_btn"

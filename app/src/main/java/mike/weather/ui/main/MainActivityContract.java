@@ -15,6 +15,7 @@ public interface MainActivityContract {
         void deleteCityFromList(int position);
         void goToSearch();
         void goToApiWebsite();
+        void goToDetailedInfo(String cityQuery);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -24,5 +25,6 @@ public interface MainActivityContract {
         void setAddBtnObservable(Observable<Object> observable);
         void setAerisWeatherObservable(Observable<Object> observable);
         void itemSwipedToDelete(int position, City cityToDelete);
+        void cityClicked(City city);
     }
 }

@@ -16,7 +16,7 @@ public interface WeatherApi {
                                               @Query("client_id") String id,
                                               @Query("client_secret") String secret);
 
-    @GET("observations/{city_query}&filter=allstations")
+    @GET("observations/{city_query}?filter=allstations")
     Single<ConditionsResponse> getCurrentCityConditions(@Path("city_query") String cityQuery,
                                                         @Query("client_id") String id,
                                                         @Query("client_secret") String secret);

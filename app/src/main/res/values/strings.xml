@@ -2,8 +2,14 @@
     <string name="app_name">Weather</string>
     <string name="celsius">°C</string>
     <string name="fahrenheit">°F</string>
-    <string name="updated">Updated at</string>
-    <string name="update_date_empty">--</string>
+    <string name="updated_at">Updated at</string>
+    <string name="empty_data">--</string>
     <string name="aerisweather_name">AerisWeather</string>
     <string name="search_view_hint">Type city</string>
+
+    <string-array name="forecast_spinner">
+        <item>1 day</item>
+        <item>1 week</item>
+        <item>2 weeks</item>
+    </string-array>
 </resources>

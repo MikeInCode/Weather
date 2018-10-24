@@ -16,10 +16,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.R;
 import mike.weather.data.model.City;
+import mike.weather.ui.base.OnItemClickListener;
 
 public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.ViewHolder> {
 
     private List<City> citiesList;
+    private OnItemClickListener onItemClickListener;
 
     @Inject
     public MainCitiesAdapter() {
@@ -29,6 +31,10 @@ public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.Vi
     public void setCitiesList(List<City> citiesList) {
         this.citiesList = citiesList;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -61,6 +67,7 @@ public class MainCitiesAdapter extends RecyclerView.Adapter<MainCitiesAdapter.Vi
         holder.countryName.setText(city.getCountryName());
         holder.temperature.setText(city.getTemp());
         holder.weatherIcon.setImageResource(city.getIcon());
+        holder.itemView.setOnClickListener(l -> onItemClickListener.onItemClick(city));
     }
 
     @Override

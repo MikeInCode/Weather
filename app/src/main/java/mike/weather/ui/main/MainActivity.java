@@ -32,9 +32,12 @@ import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.City;
 import mike.weather.injection.module.MainActivityModule;
+import mike.weather.ui.base.OnItemClickListener;
+import mike.weather.ui.detailed.DetailedActivity;
 import mike.weather.ui.search.SearchActivity;
 
-public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
+public class MainActivity extends AppCompatActivity implements MainActivityContract.View,
+        OnItemClickListener {
 
     @BindView(R.id.cites_recycler_view)
     RecyclerView citiesRecyclerView;
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         citiesRecyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
         initItemTouchHelper();
     }
 
@@ -125,8 +129,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
+    public void goToDetailedInfo(String cityQuery) {
+        startActivity(new Intent(this, DetailedActivity.class));
+    }
+
+    @Override
     public void showErrorToast(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onItemClick(City city) {
+        presenter.cityClicked(city);
     }
 
     private void initItemTouchHelper() {
