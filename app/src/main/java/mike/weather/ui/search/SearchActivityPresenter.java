@@ -11,38 +11,23 @@ import io.reactivex.schedulers.Schedulers;
 import mike.weather.data.DataManager;
 import mike.weather.data.model.City;
 import mike.weather.data.model.ErrorStateModel;
+import mike.weather.ui.base.BasePresenter;
 
-public class SearchActivityPresenter implements SearchActivityContract.Presenter {
-
-    private SearchActivityContract.View view;
-    private DataManager dataManager;
-    private CompositeDisposable disposables;
+public class SearchActivityPresenter extends BasePresenter<SearchActivityContract.View> implements SearchActivityContract.Presenter {
 
     @Inject
     public SearchActivityPresenter(DataManager dataManager, CompositeDisposable disposables) {
-        this.dataManager = dataManager;
-        this.disposables = disposables;
-    }
-
-    @Override
-    public void attach(SearchActivityContract.View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void detach() {
-        view = null;
-        disposables.clear();
+        super(dataManager, disposables);
     }
 
     @Override
     public void setTextChangeObservable(Observable<CharSequence> observable) {
-        disposables.add(observable
+        getDisposables().add(observable
                 .filter(query -> query.length() > 0)
-                .switchMapSingle(query -> dataManager.getCitySearchResponse(query.toString())
+                .switchMapSingle(query -> getDataManager().getCitySearchResponse(query.toString())
                         .map(response -> {
                             ErrorStateModel.setError(null);
-                            return response.getCitiesList();
+                            return response.getData();
                         })
                         .onErrorReturn(throwable -> {
                             ErrorStateModel.setError(throwable);
@@ -54,28 +39,22 @@ public class SearchActivityPresenter implements SearchActivityContract.Presenter
                 .subscribe(
                         list -> {
                             if (!list.isEmpty()) {
-                                view.showSuggestedCitiesList(list);
-                                view.hideCityNotFoundMessage();
+                                getView().showSuggestedCitiesList(list);
+                                getView().hideCityNotFoundMessage();
                             } else {
-                                view.hideSuggestedCitiesList();
-                                view.showCityNotFoundMessage();
+                                getView().hideSuggestedCitiesList();
+                                getView().showCityNotFoundMessage();
                             }
                             if (ErrorStateModel.isError()) {
-                                view.showErrorToast(ErrorStateModel.getErrorMessage());
+                                getView().showErrorToast(ErrorStateModel.getErrorMessage());
                             }
                         })
         );
     }
 
     @Override
-    public void setBackBtnObservable(Observable<Object> observable) {
-        disposables.add(observable
-                .subscribe(a -> view.goBack()));
-    }
-
-    @Override
     public void cityClicked(City cityToAdd) {
-        dataManager.addCityToDb(cityToAdd);
-        view.goBack();
+        getDataManager().addCityToDb(cityToAdd);
+        getView().goBack();
     }
 }

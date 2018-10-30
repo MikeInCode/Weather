@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import mike.weather.injection.module.AppModule;
 import mike.weather.injection.module.DatabaseModule;
+import mike.weather.injection.module.DetailedActivityModule;
 import mike.weather.injection.module.MainActivityModule;
 import mike.weather.injection.module.NetworkModule;
 import mike.weather.injection.module.SearchActivityModule;
@@ -14,4 +15,5 @@ import mike.weather.injection.module.SearchActivityModule;
 public interface AppComponent {
     MainActivityComponent plus(MainActivityModule mainActivityModule);
     SearchActivityComponent plus(SearchActivityModule searchActivityModule);
+    DetailedActivityComponent plus(DetailedActivityModule detailedActivityModule);
 }

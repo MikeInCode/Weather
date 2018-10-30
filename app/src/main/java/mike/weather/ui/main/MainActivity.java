@@ -2,22 +2,19 @@ package mike.weather.ui.main;
 
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -26,17 +23,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.City;
 import mike.weather.injection.module.MainActivityModule;
+import mike.weather.ui.base.BaseActivity;
 import mike.weather.ui.base.OnItemClickListener;
 import mike.weather.ui.detailed.DetailedActivity;
 import mike.weather.ui.search.SearchActivity;
 
-public class MainActivity extends AppCompatActivity implements MainActivityContract.View,
+public class MainActivity extends BaseActivity implements MainActivityContract.View,
         OnItemClickListener {
 
     @BindView(R.id.cites_recycler_view)
@@ -47,10 +44,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     ImageButton addCityBtn;
     @BindView(R.id.refresh_btn)
     ImageButton refreshBtn;
-    @BindView(R.id.aerisweather)
+    @BindView(R.id.aeris_weather)
     TextView aerisWeather;
-    @BindView(R.id.last_update_date)
-    TextView lastUpdateDate;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
     @Inject
@@ -62,14 +57,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         App.getAppComponent().plus(new MainActivityModule()).inject(this);
 
         presenter.attach(this);
         presenter.setRefreshObservable(RxSwipeRefreshLayout.refreshes(swipeRefreshLayout));
         presenter.setRefreshObservable(RxView.clicks(refreshBtn));
-        presenter.setAddBtnObservable(RxView.clicks(addCityBtn));
-        presenter.setAerisWeatherObservable(RxView.clicks(aerisWeather));
+
+        addCityBtn.setOnClickListener(l -> presenter.addCityBtnClicked());
+        aerisWeather.setOnClickListener(l -> presenter.aerisWeatherClicked());
 
         swipeRefreshLayout.setColorSchemeResources(R.color.color_primary);
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.onPause();
+        presenter.pause();
     }
 
     @Override
@@ -99,18 +94,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     @Override
     public void showCitiesList(List<City> citiesList) {
-        adapter.setCitiesList(citiesList);
-    }
-
-    @Override
-    public void showDate(String date) {
-        lastUpdateDate.setText(date);
-    }
-
-    @Override
-    public void hideRefreshingStatus() {
-        swipeRefreshLayout.setRefreshing(false);
-        progressBar.setVisibility(View.GONE);
+        adapter.setList(citiesList);
     }
 
     @Override
@@ -119,28 +103,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
+    public void hideRefreshingStatus() {
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(android.view.View.GONE);
+    }
+
+    @Override
+    public void goToDetailedInfo(City city) {
+        startActivity(new Intent(this, DetailedActivity.class)
+                .putExtra("city", new Gson().toJson(city)));
+    }
+
+    @Override
     public void goToSearch() {
         startActivity(new Intent(this, SearchActivity.class));
     }
 
     @Override
-    public void goToApiWebsite() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.aerisweather.com")));
-    }
-
-    @Override
-    public void goToDetailedInfo(String cityQuery) {
-        startActivity(new Intent(this, DetailedActivity.class));
-    }
-
-    @Override
-    public void showErrorToast(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onItemClick(City city) {
-        presenter.cityClicked(city);
+    public void onItemClick(int position) {
+        presenter.cityClicked(adapter.getItemAtPosition(position));
     }
 
     private void initItemTouchHelper() {

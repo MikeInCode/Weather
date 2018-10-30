@@ -1,13 +1,13 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- BaseAdapter application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/transparent</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
         <item name="android:windowBackground">@color/color_primary</item>
-        <item name="android:fontFamily">@font/overpass_light</item>
+        <item name="android:fontFamily">@font/fira_sans_light</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -37,7 +37,6 @@
 
     <style name="DetailedActivityValue">
         <item name="android:textSize">18sp</item>
-        <item name="android:text">@string/empty_data</item>
     </style>
 
 </resources>

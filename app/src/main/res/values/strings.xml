@@ -8,8 +8,7 @@
     <string name="search_view_hint">Type city</string>
 
     <string-array name="forecast_spinner">
-        <item>1 day</item>
+        <item>24 hours</item>
         <item>1 week</item>
-        <item>2 weeks</item>
     </string-array>
 </resources>

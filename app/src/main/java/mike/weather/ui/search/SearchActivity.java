@@ -1,17 +1,13 @@
 package mike.weather.ui.search;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxSearchView;
 
 import java.util.List;
@@ -22,11 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import mike.weather.App;
 import mike.weather.R;
-import mike.weather.data.model.City;
+import mike.weather.data.model.SearchData;
 import mike.weather.injection.module.SearchActivityModule;
+import mike.weather.ui.base.BaseActivity;
 import mike.weather.ui.base.OnItemClickListener;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityContract.View,
+public class SearchActivity extends BaseActivity implements SearchActivityContract.View,
         OnItemClickListener {
 
     @BindView(R.id.cites_recycler_view)
@@ -46,12 +43,12 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
         App.getAppComponent().plus(new SearchActivityModule()).inject(this);
 
         presenter.attach(this);
         presenter.setTextChangeObservable(RxSearchView.queryTextChanges(searchView));
-        presenter.setBackBtnObservable(RxView.clicks(backBtn));
+
+        backBtn.setOnClickListener(l -> presenter.backBtnClicked());
 
         citiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         citiesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -67,38 +64,28 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityC
     }
 
     @Override
-    public void showSuggestedCitiesList(List<City> suggestedList) {
-        adapter.setSuggestedCitiesList(suggestedList);
-        citiesRecyclerView.setVisibility(View.VISIBLE);
+    public void showSuggestedCitiesList(List<SearchData> suggestedList) {
+        adapter.setList(suggestedList);
+        citiesRecyclerView.setVisibility(android.view.View.VISIBLE);
     }
 
     @Override
     public void hideSuggestedCitiesList() {
-        citiesRecyclerView.setVisibility(View.GONE);
+        citiesRecyclerView.setVisibility(android.view.View.GONE);
     }
 
     @Override
     public void showCityNotFoundMessage() {
-        cityNotFoundMessage.setVisibility(View.VISIBLE);
+        cityNotFoundMessage.setVisibility(android.view.View.VISIBLE);
     }
 
     @Override
     public void hideCityNotFoundMessage() {
-        cityNotFoundMessage.setVisibility(View.GONE);
+        cityNotFoundMessage.setVisibility(android.view.View.GONE);
     }
 
     @Override
-    public void goBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void showErrorToast(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onItemClick(City cityToAdd) {
-        presenter.cityClicked(cityToAdd);
+    public void onItemClick(int position) {
+        presenter.cityClicked(adapter.getItemAtPosition(position).getCity());
     }
 }

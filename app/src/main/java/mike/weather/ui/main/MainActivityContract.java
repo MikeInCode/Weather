@@ -4,27 +4,24 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import mike.weather.data.model.City;
-import mike.weather.ui.base.BasePresenter;
-import mike.weather.ui.base.BaseView;
+import mike.weather.ui.base.IBasePresenter;
+import mike.weather.ui.base.IBaseView;
 
 public interface MainActivityContract {
-    interface View extends BaseView {
+    interface View extends IBaseView {
         void showCitiesList(List<City> citiesList);
-        void showDate(String date);
-        void hideRefreshingStatus();
         void deleteCityFromList(int position);
+        void hideRefreshingStatus();
+        void goToDetailedInfo(City city);
         void goToSearch();
-        void goToApiWebsite();
-        void goToDetailedInfo(String cityQuery);
     }
 
-    interface Presenter extends BasePresenter<View> {
-        void onPause();
+    interface Presenter extends IBasePresenter<View> {
+        void pause();
         void setCitiesList();
         void setRefreshObservable(Observable<Object> observable);
-        void setAddBtnObservable(Observable<Object> observable);
-        void setAerisWeatherObservable(Observable<Object> observable);
         void itemSwipedToDelete(int position, City cityToDelete);
         void cityClicked(City city);
+        void addCityBtnClicked();
     }
 }

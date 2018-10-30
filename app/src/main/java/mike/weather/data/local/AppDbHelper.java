@@ -13,13 +13,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import mike.weather.data.model.City;
 
 @Singleton
 public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
 
     private static final String TABLE_CITIES = "cities";
-    private static final String COLUMN_ID = "id";
     private static final String COLUMN_API_QUERY = "api_query";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_STATE = "state";
@@ -33,8 +33,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createQuery = "CREATE TABLE " + TABLE_CITIES + " ("
-                + COLUMN_ID + " INTEGER PRIMARY KEY, "
-                + COLUMN_API_QUERY + " TEXT UNIQUE, "
+                + COLUMN_API_QUERY + " TEXT PRIMARY KEY, "
                 + COLUMN_NAME + " TEXT, "
                 + COLUMN_STATE + " TEXT, "
                 + COLUMN_COUNTRY + " TEXT)";
@@ -88,10 +87,11 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper {
 
         List<City> citiesList = new ArrayList<>();
         while (cursor.moveToNext()) {
-            citiesList.add(new City(new City.Place(
+            citiesList.add(new City(
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_API_QUERY)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STATE)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY)))));
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY))));
         }
         cursor.close();
         return Observable.fromIterable(citiesList);

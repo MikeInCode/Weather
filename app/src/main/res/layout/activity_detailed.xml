@@ -22,34 +22,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/weather_icon"
-        app:layout_constraintEnd_toStartOf="@+id/sunrise_value"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/weather_icon"
         tools:text="London" />
 
     <ImageView
         android:id="@+id/weather_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/weather_clear"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/line3"
         app:layout_constraintStart_toEndOf="@+id/back_btn"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
-        android:id="@+id/temperature"
+        android:id="@+id/current_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/empty_data"
+        android:layout_marginStart="16dp"
         android:textSize="44sp"
         app:layout_constraintBottom_toBottomOf="@+id/weather_icon"
         app:layout_constraintStart_toEndOf="@+id/weather_icon"
@@ -60,7 +58,7 @@
         android:id="@+id/feels_like_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Feels like"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/weather_icon"
@@ -71,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="@string/empty_data"
+        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/feels_like_text"
         app:layout_constraintStart_toEndOf="@+id/feels_like_text"
         tools:text="21°" />
@@ -88,7 +86,7 @@
         style="@style/DetailedActivityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="56dp"
         android:text="sunrise"
         app:layout_constraintEnd_toStartOf="@+id/sunset_text"
         app:layout_constraintTop_toTopOf="@+id/sunset_text" />
@@ -107,7 +105,7 @@
         style="@style/DetailedActivityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="sunset"
         app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +135,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="172dp" />
+        app:layout_constraintGuide_end="164dp" />
 
     <TextView
         android:id="@+id/humidity_text"
@@ -162,7 +160,7 @@
         style="@style/DetailedActivityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="wind"
         app:layout_constraintEnd_toEndOf="@+id/sunset_text"
         app:layout_constraintTop_toBottomOf="@+id/line1" />
@@ -200,7 +198,6 @@
         style="@style/DetailedActivityValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/empty_data"
         app:layout_constraintEnd_toEndOf="@+id/clouds_text"
         app:layout_constraintTop_toBottomOf="@+id/clouds_text"
         tools:text="7%" />
@@ -210,7 +207,7 @@
         style="@style/DetailedActivityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="pressure"
         app:layout_constraintEnd_toEndOf="@+id/wind_text"
         app:layout_constraintTop_toBottomOf="@+id/line2" />
@@ -258,5 +255,27 @@
         app:layout_constraintStart_toEndOf="@+id/forecast_text">
 
     </Spinner>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/forecast_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_text">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

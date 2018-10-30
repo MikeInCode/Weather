@@ -2,74 +2,64 @@ package mike.weather.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-import mike.weather.util.WeatherImageUtils;
-
 public class City {
-    @SerializedName("place")
-    private Place place;
-    private String temp;
-    private int icon;
+    private String query;
+    @SerializedName("name")
+    private String cityName;
+    @SerializedName("state")
+    private String stateName;
+    @SerializedName("countryFull")
+    private String countryName;
+    private Conditions currentConditions;
 
-    public City(Place place) {
-        this.place = place;
+    public City(String query, String cityName, String stateName, String countryName) {
+        this.query = query;
+        this.cityName = cityName;
+        this.stateName = stateName;
+        this.countryName = countryName;
     }
 
     public String getQuery() {
-        if (getStateName() == null) return (getCityName() + "," + getCountryName()).toLowerCase();
-        else return (getCityName() + "," + getStateName()).toLowerCase();
+        return generateQuery();
     }
 
     public String getCityName() {
-        return place.cityName;
+        return cityName;
     }
 
     public String getStateName() {
-        if (place.stateName == null || place.stateName.equals("")) return null;
-        else return place.stateName;
+        return generateState();
     }
 
     public String getCountryName() {
-        return place.countryName;
+        return countryName;
     }
 
-    public String getTemp() {
-        if (temp == null) return "--";
-        else return temp;
+    public Conditions getCurrentConditions() {
+        return currentConditions;
     }
 
-    public void setTemp(String temp) {
-        this.temp = new BigDecimal(temp).setScale(0, RoundingMode.HALF_UP) + "°";
+    public void setCurrentConditions(Conditions currentConditions) {
+        this.currentConditions = currentConditions;
     }
 
-    public int getIcon() {
-        return icon;
+    private String generateQuery() {
+        if (query == null) {
+            if (getStateName() == null) return (cityName + "," + countryName).toLowerCase();
+            else return (cityName + "," + getStateName()).toLowerCase();
+        } else {
+            return query;
+        }
     }
 
-    public void setIcon(String icon) {
-        this.icon = WeatherImageUtils.getImageResource(icon);
+    private String generateState() {
+        if (stateName == null || stateName.equals("")) return null;
+        else return stateName;
     }
 
     @Override
     public String toString() {
-        if (getStateName() == null) return getCityName() + ", " + getCountryName();
-        else return getCityName() + ", " + getStateName() + ", " + getCountryName();
-    }
-
-    public static class Place {
-        @SerializedName("name")
-        private String cityName;
-        @SerializedName("state")
-        private String stateName;
-        @SerializedName("countryFull")
-        private String countryName;
-
-        public Place(String cityName, String stateName, String countryName) {
-            this.cityName = cityName;
-            this.stateName = stateName;
-            this.countryName = countryName;
-        }
+        if (getStateName() == null) return cityName + ", " + countryName;
+        else return cityName + ", " + stateName + ", " + countryName;
     }
 }

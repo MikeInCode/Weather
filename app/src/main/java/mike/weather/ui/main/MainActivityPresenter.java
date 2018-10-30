@@ -16,34 +16,20 @@ import io.reactivex.schedulers.Schedulers;
 import mike.weather.data.DataManager;
 import mike.weather.data.model.City;
 import mike.weather.data.model.ErrorStateModel;
+import mike.weather.ui.base.BasePresenter;
 
-public class MainActivityPresenter implements MainActivityContract.Presenter {
-    private MainActivityContract.View view;
-    private DataManager dataManager;
-    private CompositeDisposable disposables;
+public class MainActivityPresenter extends BasePresenter<MainActivityContract.View> implements MainActivityContract.Presenter {
     private Disposable cityListDisposable;
 
     @Inject
     public MainActivityPresenter(DataManager dataManager, CompositeDisposable disposables) {
-        this.dataManager = dataManager;
-        this.disposables = disposables;
+        super(dataManager, disposables);
     }
 
     @Override
-    public void attach(MainActivityContract.View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void detach() {
-        view = null;
-        disposables.clear();
-    }
-
-    @Override
-    public void onPause() {
+    public void pause() {
         if (cityListDisposable != null) {
-            disposables.remove(cityListDisposable);
+            getDisposables().remove(cityListDisposable);
         }
     }
 
@@ -53,24 +39,23 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 .subscribe(
                         list -> {
                             if (ErrorStateModel.isError()) {
-                                view.showErrorToast(ErrorStateModel.getErrorMessage());
+                                getView().showErrorToast(ErrorStateModel.getErrorMessage());
                             } else {
-                                view.showCitiesList(list);
-                                view.showDate(DateTime.now().toString(DateTimeFormat.shortTime()));
+                                getView().showCitiesList(list);
+                                getView().showLastUpdateDate(DateTime.now().toString(DateTimeFormat.shortTime()));
                             }
                         }
                 );
-        disposables.add(cityListDisposable);
+        getDisposables().add(cityListDisposable);
     }
 
     private Single<List<City>> getCitiesListObservable() {
-        return dataManager.getCitiesFromDb()
+        return getDataManager().getCitiesFromDb()
                 .flatMapSingle(city ->
-                        dataManager.getCityConditionsResponse(city.getQuery())
+                        getDataManager().getCityConditionsResponse(city.getQuery())
                                 .map(response -> {
                                     ErrorStateModel.setError(null);
-                                    city.setTemp(response.getTemp());
-                                    city.setIcon(response.getIcon());
+                                    city.setCurrentConditions(response.getData().getConditions());
                                     return city;
                                 })
                                 .onErrorReturn(throwable -> {
@@ -81,20 +66,20 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate(() -> view.hideRefreshingStatus());
+                .doAfterTerminate(() -> getView().hideRefreshingStatus());
     }
 
     @Override
     public void setRefreshObservable(Observable<Object> observable) {
-        disposables.add(observable
+        getDisposables().add(observable
                 .flatMapSingle(o -> getCitiesListObservable())
                 .subscribe(
                         list -> {
                             if (ErrorStateModel.isError()) {
-                                view.showErrorToast(ErrorStateModel.getErrorMessage());
+                                getView().showErrorToast(ErrorStateModel.getErrorMessage());
                             } else {
-                                view.showCitiesList(list);
-                                view.showDate(DateTime.now().toString(DateTimeFormat.shortTime()));
+                                getView().showCitiesList(list);
+                                getView().showLastUpdateDate(DateTime.now().toString(DateTimeFormat.shortTime()));
                             }
                         }
                 )
@@ -102,25 +87,18 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     }
 
     @Override
-    public void setAddBtnObservable(Observable<Object> observable) {
-        disposables.add(observable
-                .subscribe(a -> view.goToSearch()));
-    }
-
-    @Override
-    public void setAerisWeatherObservable(Observable<Object> observable) {
-        disposables.add(observable
-                .subscribe(a -> view.goToApiWebsite()));
-    }
-
-    @Override
     public void itemSwipedToDelete(int position, City cityToDelete) {
-        view.deleteCityFromList(position);
-        dataManager.deleteCityFromDb(cityToDelete);
+        getView().deleteCityFromList(position);
+        getDataManager().deleteCityFromDb(cityToDelete);
     }
 
     @Override
     public void cityClicked(City city) {
-        view.goToDetailedInfo(city.getQuery());
+        getView().goToDetailedInfo(city);
+    }
+
+    @Override
+    public void addCityBtnClicked() {
+        getView().goToSearch();
     }
 }

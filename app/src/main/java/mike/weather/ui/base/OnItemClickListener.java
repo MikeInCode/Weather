@@ -1,7 +1,5 @@
 package mike.weather.ui.base;
 
-import mike.weather.data.model.City;
-
 public interface OnItemClickListener {
-    void onItemClick(City city);
+    void onItemClick(int position);
 }

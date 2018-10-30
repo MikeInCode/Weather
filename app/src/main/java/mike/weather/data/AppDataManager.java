@@ -1,14 +1,18 @@
 package mike.weather.data;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import mike.weather.data.local.DbHelper;
+import mike.weather.data.model.ApiResponse;
 import mike.weather.data.model.City;
-import mike.weather.data.model.ConditionsResponse;
-import mike.weather.data.model.SearchResponse;
+import mike.weather.data.model.ConditionsData;
+import mike.weather.data.model.ForecastData;
+import mike.weather.data.model.SearchData;
 import mike.weather.data.remote.ApiHelper;
 
 @Singleton
@@ -23,7 +27,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<SearchResponse> getCitySearchResponse(String query) {
+    public Single<ApiResponse<List<SearchData>>> getCitySearchResponse(String query) {
         return apiHelper.makeCitySearchRequest(query);
     }
 
@@ -38,12 +42,19 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<ConditionsResponse> getCityConditionsResponse(String cityQuery) {
+    public Single<ApiResponse<ConditionsData>> getCityConditionsResponse(String cityQuery) {
         return apiHelper.makeCurrentConditionsRequest(cityQuery);
     }
 
     @Override
     public void deleteCityFromDb(City cityToDelete) {
         dbHelper.deleteCity(cityToDelete);
+    }
+
+    @Override
+    public Single<ApiResponse<List<ForecastData>>> getCityForecastResponse(String cityQuery,
+                                                                           String timeInterval,
+                                                                           String responseSize) {
+        return apiHelper.makeForecastRequest(cityQuery, timeInterval, responseSize);
     }
 }
