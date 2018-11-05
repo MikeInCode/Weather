@@ -6,6 +6,7 @@
     <string name="empty_data">--</string>
     <string name="aerisweather_name">AerisWeather</string>
     <string name="search_view_hint">Type city</string>
+    <string name="today">Today</string>
 
     <string-array name="forecast_spinner">
         <item>24 hours</item>

@@ -9,26 +9,25 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.Conditions;
+import mike.weather.data.model.Forecast;
 import mike.weather.ui.base.BaseAdapter;
 import mike.weather.ui.base.BaseViewHolder;
 import mike.weather.ui.base.OnItemClickListener;
 
-public class ForecastAdapter extends BaseAdapter<Conditions, ForecastAdapter.ForecastViewHolder> {
+public class ForecastOneDayAdapter extends BaseAdapter<Forecast, ForecastOneDayAdapter.ViewHolder> {
 
     @Inject
-    public ForecastAdapter() {
+    public ForecastOneDayAdapter() {
     }
 
     @NonNull
     @Override
-    public ForecastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ForecastViewHolder(inflate(R.layout.forecast_24hours_list_item, parent));
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(inflate(R.layout.forecast_one_day_list_item, parent));
     }
 
-    public static class ForecastViewHolder extends BaseViewHolder<Conditions> {
+    public static class ViewHolder extends BaseViewHolder<Forecast> {
         @BindView(R.id.time)
         TextView time;
         @BindView(R.id.weather_icon)
@@ -36,12 +35,12 @@ public class ForecastAdapter extends BaseAdapter<Conditions, ForecastAdapter.For
         @BindView(R.id.current_temp)
         TextView temp;
 
-        public ForecastViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
         @Override
-        public void onBindView(Conditions item, OnItemClickListener listener) {
+        public void onBindView(Forecast item, OnItemClickListener listener) {
             time.setText(item.getTime());
             icon.setImageResource(item.getIcon());
             temp.setText(item.getTempCelsius());

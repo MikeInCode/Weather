@@ -10,7 +10,7 @@ import java.math.RoundingMode;
 
 import mike.weather.util.WeatherImageUtils;
 
-public class Conditions {
+public class CurrentConditions {
     @SerializedName("tempC")
     private String tempCelsius;
     @SerializedName("icon")

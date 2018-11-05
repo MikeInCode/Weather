@@ -17,7 +17,6 @@ public interface MainActivityContract {
     }
 
     interface Presenter extends IBasePresenter<View> {
-        void pause();
         void setCitiesList();
         void setRefreshObservable(Observable<Object> observable);
         void itemSwipedToDelete(int position, City cityToDelete);

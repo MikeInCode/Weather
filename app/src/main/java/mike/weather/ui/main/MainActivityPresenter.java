@@ -27,14 +27,10 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
     }
 
     @Override
-    public void pause() {
+    public void setCitiesList() {
         if (cityListDisposable != null) {
             getDisposables().remove(cityListDisposable);
         }
-    }
-
-    @Override
-    public void setCitiesList() {
         cityListDisposable = getCitiesListObservable()
                 .subscribe(
                         list -> {
@@ -55,7 +51,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
                         getDataManager().getCityConditionsResponse(city.getQuery())
                                 .map(response -> {
                                     ErrorStateModel.setError(null);
-                                    city.setCurrentConditions(response.getData().getConditions());
+                                    city.setCurrentConditions(response.getData().getCurrentConditions());
                                     return city;
                                 })
                                 .onErrorReturn(throwable -> {

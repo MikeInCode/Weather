@@ -2,6 +2,8 @@ package mike.weather.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class City {
     private String query;
     @SerializedName("name")
@@ -10,7 +12,8 @@ public class City {
     private String stateName;
     @SerializedName("countryFull")
     private String countryName;
-    private Conditions currentConditions;
+    private CurrentConditions currentConditions;
+    private List<Forecast> forecastList;
 
     public City(String query, String cityName, String stateName, String countryName) {
         this.query = query;
@@ -35,12 +38,20 @@ public class City {
         return countryName;
     }
 
-    public Conditions getCurrentConditions() {
+    public CurrentConditions getCurrentConditions() {
         return currentConditions;
     }
 
-    public void setCurrentConditions(Conditions currentConditions) {
+    public void setCurrentConditions(CurrentConditions currentConditions) {
         this.currentConditions = currentConditions;
+    }
+
+    public List<Forecast> getForecastList() {
+        return forecastList;
+    }
+
+    public void setForecastList(List<Forecast> forecastList) {
+        this.forecastList = forecastList;
     }
 
     private String generateQuery() {

@@ -6,9 +6,9 @@ import java.util.List;
 
 public class ForecastData {
     @SerializedName("periods")
-    private List<Conditions> forecastList;
+    private List<Forecast> forecastList;
 
-    public List<Conditions> getForecastList() {
+    public List<Forecast> getForecastList() {
         return forecastList;
     }
 }

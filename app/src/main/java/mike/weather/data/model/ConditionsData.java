@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 public class ConditionsData {
 
     @SerializedName("ob")
-    private Conditions conditions;
+    private CurrentConditions currentConditions;
 
-    public Conditions getConditions() {
-        return conditions;
+    public CurrentConditions getCurrentConditions() {
+        return currentConditions;
     }
 }

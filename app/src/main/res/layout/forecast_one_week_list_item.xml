@@ -32,7 +32,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="108dp"
+        android:layout_marginEnd="128dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/weather_clear"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,8 @@
         android:id="@+id/min_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        android:layout_marginEnd="12dp"
+        android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/slash"
         app:layout_constraintEnd_toStartOf="@+id/slash"
         tools:text="12°" />
@@ -52,20 +53,25 @@
         android:id="@+id/slash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="/"
-        android:textSize="22sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/max_temp"
-        app:layout_constraintEnd_toStartOf="@+id/max_temp" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/weather_icon"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/max_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/slash"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="22°" />
 
 </android.support.constraint.ConstraintLayout>

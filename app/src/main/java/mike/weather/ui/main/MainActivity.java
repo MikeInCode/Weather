@@ -81,12 +81,6 @@ public class MainActivity extends BaseActivity implements MainActivityContract.V
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        presenter.pause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.detach();

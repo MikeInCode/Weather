@@ -15,7 +15,7 @@ import mike.weather.ui.base.BaseAdapter;
 import mike.weather.ui.base.BaseViewHolder;
 import mike.weather.ui.base.OnItemClickListener;
 
-public class MainCitiesAdapter extends BaseAdapter<City, MainCitiesAdapter.MainViewHolder> {
+public class MainCitiesAdapter extends BaseAdapter<City, MainCitiesAdapter.ViewHolder> {
 
     @Inject
     public MainCitiesAdapter() {
@@ -23,11 +23,11 @@ public class MainCitiesAdapter extends BaseAdapter<City, MainCitiesAdapter.MainV
 
     @NonNull
     @Override
-    public MainCitiesAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MainViewHolder(inflate(R.layout.main_cities_list_item, parent));
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(inflate(R.layout.main_cities_list_item, parent));
     }
 
-    public static class MainViewHolder extends BaseViewHolder<City> {
+    public static class ViewHolder extends BaseViewHolder<City> {
         @BindView(R.id.city_name)
         TextView cityName;
         @BindView(R.id.country_name)
@@ -37,7 +37,7 @@ public class MainCitiesAdapter extends BaseAdapter<City, MainCitiesAdapter.MainV
         @BindView(R.id.weather_icon)
         ImageView weatherIcon;
 
-        public MainViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 

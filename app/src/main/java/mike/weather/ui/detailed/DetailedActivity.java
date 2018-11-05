@@ -1,36 +1,34 @@
 package mike.weather.ui.detailed;
 
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jakewharton.rxbinding2.view.RxView;
-
-import java.util.List;
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.City;
-import mike.weather.data.model.Conditions;
 import mike.weather.injection.module.DetailedActivityModule;
 import mike.weather.ui.base.BaseActivity;
+import mike.weather.ui.base.OnItemClickListener;
 
 public class DetailedActivity extends BaseActivity implements DetailedActivityContract.View {
 
     @BindView(R.id.forecast_recycler_view)
     RecyclerView forecastRecyclerView;
     @BindView(R.id.forecast_spinner)
-    Spinner forecastSpinner;
+    AppCompatSpinner forecastSpinner;
     @BindView(R.id.refresh_btn)
     ImageButton refreshBtn;
     @BindView(R.id.aeris_weather)
@@ -60,7 +58,9 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
     @Inject
     DetailedActivityContract.Presenter presenter;
     @Inject
-    ForecastAdapter adapter;
+    ForecastOneDayAdapter forecastOneDayAdapter;
+    @Inject
+    ForecastOneWeekAdapter forecastOneWeekAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,7 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
 
         presenter.attach(this);
         presenter.initCity(new Gson().fromJson(getIntent().getStringExtra("city"), City.class));
-        presenter.setCityData();
-        presenter.setForecastData();
+        presenter.setSpinnerObservable(RxAdapterView.itemSelections(forecastSpinner));
         presenter.setRefreshObservable(RxView.clicks(refreshBtn));
 
         backBtn.setOnClickListener(l -> presenter.backBtnClicked());
@@ -79,7 +78,6 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
 
         forecastRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         forecastRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        forecastRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -89,8 +87,17 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
     }
 
     @Override
-    public void showCityInfo(City city) {
+    public void showCityData(City city) {
+        showCityName(city);
+        showCityConditions(city);
+        showCityForecast(city);
+    }
+
+    private void showCityName(City city) {
         cityName.setText(city.getCityName());
+    }
+
+    private void showCityConditions(City city) {
         icon.setImageResource(city.getCurrentConditions().getIcon());
         currentTemp.setText(city.getCurrentConditions().getTempCelsius());
         feelsLikeTemp.setText(city.getCurrentConditions().getFeelsLikeTempCelsius());
@@ -102,8 +109,16 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
         pressure.setText(city.getCurrentConditions().getPressureMillibars());
     }
 
-    @Override
-    public void showForecast(List<Conditions> forecastList) {
-        adapter.setList(forecastList);
+    private void showCityForecast(City city) {
+        switch (forecastSpinner.getSelectedItemPosition()) {
+            case 0:
+                forecastRecyclerView.setAdapter(forecastOneDayAdapter);
+                forecastOneDayAdapter.setList(city.getForecastList());
+                break;
+            case 1:
+                forecastRecyclerView.setAdapter(forecastOneWeekAdapter);
+                forecastOneWeekAdapter.setList(city.getForecastList());
+                break;
+        }
     }
 }
