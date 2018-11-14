@@ -15,7 +15,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import mike.weather.data.DataManager;
+import mike.weather.data.IDataManager;
 import mike.weather.data.model.City;
 import mike.weather.data.model.ErrorStateModel;
 import mike.weather.data.model.Forecast;
@@ -27,7 +27,7 @@ public class DetailedActivityPresenter extends BasePresenter<DetailedActivityCon
     private String forecastLength;
 
     @Inject
-    public DetailedActivityPresenter(DataManager dataManager, CompositeDisposable disposables) {
+    public DetailedActivityPresenter(IDataManager dataManager, CompositeDisposable disposables) {
         super(dataManager, disposables);
     }
 
@@ -47,21 +47,6 @@ public class DetailedActivityPresenter extends BasePresenter<DetailedActivityCon
                 forecastLength = "7";
                 break;
         }
-    }
-
-    @Override
-    public void setAllData() {
-        getDisposables().add(getAllDataObservable()
-                .subscribe(
-                        city -> {
-                            getView().showCityData(city);
-                            if (ErrorStateModel.isError()) {
-                                getView().showErrorToast(ErrorStateModel.getErrorMessage());
-                            } else {
-                                getView().showLastUpdateDate(DateTime.now().toString(DateTimeFormat.shortTime()));
-                            }
-                        }
-                ));
     }
 
     private Single<City> getAllDataObservable() {
@@ -101,7 +86,8 @@ public class DetailedActivityPresenter extends BasePresenter<DetailedActivityCon
                 })
                 .onErrorReturn(throwable -> {
                     ErrorStateModel.setError(throwable);
-                    return new ArrayList<>();
+                    if (city.getForecastList() != null) return city.getForecastList();
+                    else return new ArrayList<>();
                 });
     }
 

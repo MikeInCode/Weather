@@ -25,8 +25,6 @@ public interface WeatherApi {
                                                                  @Query("client_id") String id,
                                                                  @Query("client_secret") String secret);
 
-    //https://api.aerisapi.com/forecasts/odessa,ua?filter=1hr&limit=24&client_id=SM0bBPNWhfb0H4YceTF9V&client_secret=txCS1xu9rttUlIkpimfDpykDZzCBtJmx2W8MH3Sk
-
     @GET("forecasts/{city_query}")
     Single<ApiResponse<List<ForecastData>>> getCityForecast(@Path("city_query") String cityQuery,
                                                             @Query("filter") String timeInterval,

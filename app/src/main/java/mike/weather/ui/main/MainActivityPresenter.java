@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import mike.weather.data.DataManager;
+import mike.weather.data.IDataManager;
 import mike.weather.data.model.City;
 import mike.weather.data.model.ErrorStateModel;
 import mike.weather.ui.base.BasePresenter;
@@ -22,7 +22,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
     private Disposable cityListDisposable;
 
     @Inject
-    public MainActivityPresenter(DataManager dataManager, CompositeDisposable disposables) {
+    public MainActivityPresenter(IDataManager dataManager, CompositeDisposable disposables) {
         super(dataManager, disposables);
     }
 
@@ -34,10 +34,10 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
         cityListDisposable = getCitiesListObservable()
                 .subscribe(
                         list -> {
+                            getView().showCitiesList(list);
                             if (ErrorStateModel.isError()) {
                                 getView().showErrorToast(ErrorStateModel.getErrorMessage());
                             } else {
-                                getView().showCitiesList(list);
                                 getView().showLastUpdateDate(DateTime.now().toString(DateTimeFormat.shortTime()));
                             }
                         }
@@ -71,10 +71,10 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
                 .flatMapSingle(o -> getCitiesListObservable())
                 .subscribe(
                         list -> {
+                            getView().showCitiesList(list);
                             if (ErrorStateModel.isError()) {
                                 getView().showErrorToast(ErrorStateModel.getErrorMessage());
                             } else {
-                                getView().showCitiesList(list);
                                 getView().showLastUpdateDate(DateTime.now().toString(DateTimeFormat.shortTime()));
                             }
                         }

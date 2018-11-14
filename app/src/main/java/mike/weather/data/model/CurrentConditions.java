@@ -11,8 +11,10 @@ import java.math.RoundingMode;
 import mike.weather.util.WeatherImageUtils;
 
 public class CurrentConditions {
+    @SerializedName("weatherPrimary")
+    private String weatherDescription;
     @SerializedName("tempC")
-    private String tempCelsius;
+    private double tempCelsius;
     @SerializedName("icon")
     private String icon;
     @SerializedName("feelslikeC")
@@ -29,8 +31,10 @@ public class CurrentConditions {
     private String cloudsCoverage;
     @SerializedName("pressureMB")
     private String pressureMillibars;
-    @SerializedName("dateTimeISO")
-    private String time;
+
+    public String getWeatherDescription() {
+        return weatherDescription;
+    }
 
     public String getTempCelsius() {
         return new BigDecimal(tempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
@@ -66,9 +70,5 @@ public class CurrentConditions {
 
     public String getPressureMillibars() {
         return pressureMillibars + " mbar";
-    }
-
-    public String getTime() {
-        return DateTime.parse(time).toString(DateTimeFormat.shortTime());
     }
 }

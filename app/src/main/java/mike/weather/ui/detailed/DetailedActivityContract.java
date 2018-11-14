@@ -14,7 +14,6 @@ public interface DetailedActivityContract {
 
     interface Presenter extends IBasePresenter<View> {
         void initCity(City mainCity);
-        void setAllData();
         void setSpinnerObservable(InitialValueObservable<Integer> observable);
         void setRefreshObservable(Observable<Object> observable);
     }

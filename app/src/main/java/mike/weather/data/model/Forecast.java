@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.util.WeatherImageUtils;
@@ -38,14 +41,14 @@ public class Forecast {
     }
 
     public String getTempCelsius() {
-        return tempCelsius + "°";
+        return new BigDecimal(tempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
     }
 
     public String getMinTempCelsius() {
-        return minTempCelsiuis + "°";
+        return new BigDecimal(minTempCelsiuis).setScale(0, RoundingMode.HALF_UP) + "°";
     }
 
     public String getMaxTempCelsius() {
-        return maxTempCelsiuis + "°";
+        return new BigDecimal(maxTempCelsiuis).setScale(0, RoundingMode.HALF_UP) + "°";
     }
 }

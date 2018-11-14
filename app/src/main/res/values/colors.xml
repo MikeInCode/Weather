@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#3279ad</color>
-    <color name="color_accent">#195987</color>
+    <color name="color_primary">#2a81c2</color>
+    <color name="color_accent">#24699e</color>
     <color name="white">#ffffff</color>
     <color name="white_60">#99ffffff</color>
     <color name="transparent">@android:color/transparent</color>
-    <color name="color_delete">#b64d4d</color>
+    <color name="color_delete">#b64547</color>
     <color name="color_line">#266b9b</color>
+    <color name="launcher_color_start">#1883cf</color>
+    <color name="launcher_color_end">#299be7</color>
+
 </resources>

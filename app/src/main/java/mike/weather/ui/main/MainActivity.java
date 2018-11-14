@@ -134,7 +134,6 @@ public class MainActivity extends BaseActivity implements MainActivityContract.V
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
                 new RecyclerViewSwipeDecorator.Builder(MainActivity.this, c, recyclerView,
                         viewHolder, dX, dY, actionState, isCurrentlyActive)
                         .addBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.color_delete))

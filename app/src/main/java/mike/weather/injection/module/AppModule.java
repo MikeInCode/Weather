@@ -5,8 +5,8 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
-import mike.weather.data.AppDataManager;
 import mike.weather.data.DataManager;
+import mike.weather.data.IDataManager;
 
 @Module
 public class AppModule {
@@ -28,7 +28,7 @@ public class AppModule {
     }
 
     @Provides
-    DataManager provideDataManager(AppDataManager appDataManager) {
-        return appDataManager;
+    IDataManager provideDataManager(DataManager dataManager) {
+        return dataManager;
     }
 }

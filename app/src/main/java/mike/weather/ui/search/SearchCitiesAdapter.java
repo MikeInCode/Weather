@@ -1,21 +1,14 @@
 package mike.weather.ui.search;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import mike.weather.R;
-import mike.weather.data.model.City;
 import mike.weather.data.model.SearchData;
 import mike.weather.ui.base.BaseAdapter;
 import mike.weather.ui.base.BaseViewHolder;

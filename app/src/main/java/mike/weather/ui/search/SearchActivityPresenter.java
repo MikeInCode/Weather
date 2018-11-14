@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import mike.weather.data.DataManager;
+import mike.weather.data.IDataManager;
 import mike.weather.data.model.City;
 import mike.weather.data.model.ErrorStateModel;
 import mike.weather.ui.base.BasePresenter;
@@ -16,7 +16,7 @@ import mike.weather.ui.base.BasePresenter;
 public class SearchActivityPresenter extends BasePresenter<SearchActivityContract.View> implements SearchActivityContract.Presenter {
 
     @Inject
-    public SearchActivityPresenter(DataManager dataManager, CompositeDisposable disposables) {
+    public SearchActivityPresenter(IDataManager dataManager, CompositeDisposable disposables) {
         super(dataManager, disposables);
     }
 

@@ -21,7 +21,6 @@ import mike.weather.R;
 import mike.weather.data.model.City;
 import mike.weather.injection.module.DetailedActivityModule;
 import mike.weather.ui.base.BaseActivity;
-import mike.weather.ui.base.OnItemClickListener;
 
 public class DetailedActivity extends BaseActivity implements DetailedActivityContract.View {
 
@@ -35,6 +34,8 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
     TextView aerisWeather;
     @BindView(R.id.back_btn)
     ImageButton backBtn;
+    @BindView(R.id.weather_description)
+    TextView weatherDescription;
     @BindView(R.id.city_name)
     TextView cityName;
     @BindView(R.id.weather_icon)
@@ -98,15 +99,18 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
     }
 
     private void showCityConditions(City city) {
-        icon.setImageResource(city.getCurrentConditions().getIcon());
-        currentTemp.setText(city.getCurrentConditions().getTempCelsius());
-        feelsLikeTemp.setText(city.getCurrentConditions().getFeelsLikeTempCelsius());
-        sunrise.setText(city.getCurrentConditions().getSunrise());
-        sunset.setText(city.getCurrentConditions().getSunset());
-        humidity.setText(city.getCurrentConditions().getHumidity());
-        wind.setText(city.getCurrentConditions().getWindSpeedKPH());
-        cloudsCoverage.setText(city.getCurrentConditions().getCloudsCoverage());
-        pressure.setText(city.getCurrentConditions().getPressureMillibars());
+        if (city.getCurrentConditions() != null) {
+            weatherDescription.setText(city.getCurrentConditions().getWeatherDescription());
+            icon.setImageResource(city.getCurrentConditions().getIcon());
+            currentTemp.setText(city.getCurrentConditions().getTempCelsius());
+            feelsLikeTemp.setText(city.getCurrentConditions().getFeelsLikeTempCelsius());
+            sunrise.setText(city.getCurrentConditions().getSunrise());
+            sunset.setText(city.getCurrentConditions().getSunset());
+            humidity.setText(city.getCurrentConditions().getHumidity());
+            wind.setText(city.getCurrentConditions().getWindSpeedKPH());
+            cloudsCoverage.setText(city.getCurrentConditions().getCloudsCoverage());
+            pressure.setText(city.getCurrentConditions().getPressureMillibars());
+        }
     }
 
     private void showCityForecast(City city) {

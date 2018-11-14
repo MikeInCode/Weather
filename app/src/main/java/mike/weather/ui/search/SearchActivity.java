@@ -4,18 +4,17 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.widget.ImageButton;
-import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding2.widget.RxSearchView;
+import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import mike.weather.App;
 import mike.weather.R;
 import mike.weather.data.model.SearchData;

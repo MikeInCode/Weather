@@ -16,20 +16,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
+    <android.support.v7.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:queryBackground="@null"
-        android:queryHint="@string/search_view_hint"
         android:theme="@style/SearchView"
         app:layout_constraintBottom_toBottomOf="@+id/back_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/back_btn"
-        app:layout_constraintTop_toTopOf="@+id/back_btn">
+        app:layout_constraintTop_toTopOf="@+id/back_btn"
+        app:queryBackground="@null"
+        app:queryHint="@string/search_view_hint">
 
-    </SearchView>
+    </android.support.v7.widget.SearchView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cites_recycler_view"

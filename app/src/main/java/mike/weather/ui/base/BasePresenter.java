@@ -1,14 +1,14 @@
 package mike.weather.ui.base;
 
 import io.reactivex.disposables.CompositeDisposable;
-import mike.weather.data.DataManager;
+import mike.weather.data.IDataManager;
 
 public abstract class BasePresenter<T extends IBaseView> implements IBasePresenter<T> {
     private T view;
-    private DataManager dataManager;
+    private IDataManager dataManager;
     private CompositeDisposable disposables;
 
-    public BasePresenter(DataManager dataManager, CompositeDisposable disposables) {
+    public BasePresenter(IDataManager dataManager, CompositeDisposable disposables) {
         this.dataManager = dataManager;
         this.disposables = disposables;
     }
@@ -38,7 +38,7 @@ public abstract class BasePresenter<T extends IBaseView> implements IBasePresent
         return view;
     }
 
-    public DataManager getDataManager() {
+    public IDataManager getDataManager() {
         return dataManager;
     }
 

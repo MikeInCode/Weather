@@ -1,12 +1,20 @@
 <resources>
-    <string name="app_name">Weather</string>
+    <string name="app_name">Simple Weather</string>
     <string name="celsius">°C</string>
     <string name="fahrenheit">°F</string>
     <string name="updated_at">Updated at</string>
-    <string name="empty_data">--</string>
     <string name="aerisweather_name">AerisWeather</string>
     <string name="search_view_hint">Type city</string>
     <string name="today">Today</string>
+    <string name="feels_like">Feels like</string>
+    <string name="sunrise">sunrise</string>
+    <string name="sunset">sunset</string>
+    <string name="humidity">humidity</string>
+    <string name="wind">wind</string>
+    <string name="clouds">clouds</string>
+    <string name="pressure">pressure</string>
+    <string name="forecast">forecast</string>
+    <string name="slash">/</string>
 
     <string-array name="forecast_spinner">
         <item>24 hours</item>
