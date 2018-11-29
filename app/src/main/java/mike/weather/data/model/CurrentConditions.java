@@ -14,7 +14,7 @@ public class CurrentConditions {
     @SerializedName("weatherPrimary")
     private String weatherDescription;
     @SerializedName("tempC")
-    private double tempCelsius;
+    private String tempCelsius;
     @SerializedName("icon")
     private String icon;
     @SerializedName("feelslikeC")
@@ -33,42 +33,60 @@ public class CurrentConditions {
     private String pressureMillibars;
 
     public String getWeatherDescription() {
-        return weatherDescription;
+        if (weatherDescription != null) return weatherDescription;
+        else return "";
     }
 
     public String getTempCelsius() {
-        return new BigDecimal(tempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
+        if (tempCelsius != null)
+            return new BigDecimal(tempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
+        else return "";
     }
 
     public int getIcon() {
-        return WeatherImageUtils.getImageResource(icon);
+        if (icon != null) return WeatherImageUtils.getImageResource(icon);
+        else return 0;
     }
 
     public String getFeelsLikeTempCelsius() {
-        return new BigDecimal(feelsLikeTempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
+        if (feelsLikeTempCelsius != null)
+            return new BigDecimal(feelsLikeTempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
+        else return "";
     }
 
     public String getSunrise() {
-        return DateTime.parse(sunrise).toString(DateTimeFormat.shortTime());
+        if (sunrise != null)
+            return DateTime.parse(sunrise).toString(DateTimeFormat.shortTime());
+        else return "";
     }
 
     public String getSunset() {
-        return DateTime.parse(sunset).toString(DateTimeFormat.shortTime());
+        if (sunset != null)
+            return DateTime.parse(sunset).toString(DateTimeFormat.shortTime());
+        else return "";
     }
 
     public String getHumidity() {
-        return humidity + "%";
+        if (humidity != null)
+            return humidity + "%";
+        else return "";
     }
 
     public String getWindSpeedKPH() {
-        return windSpeedKPH + " km/h";
+        if (windSpeedKPH != null)
+            return windSpeedKPH + " km/h";
+        else return "";
     }
 
     public String getCloudsCoverage() {
-        return cloudsCoverage + "%";
+        if (cloudsCoverage != null)
+            return cloudsCoverage + "%";
+        else return "";
     }
 
     public String getPressureMillibars() {
-        return pressureMillibars + " mbar";
+        if (pressureMillibars != null)
+            return pressureMillibars + " mbar";
+        else return "";
     }
 }

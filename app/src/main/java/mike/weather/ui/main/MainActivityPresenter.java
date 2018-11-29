@@ -15,6 +15,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import mike.weather.data.IDataManager;
 import mike.weather.data.model.City;
+import mike.weather.data.model.CurrentConditions;
 import mike.weather.data.model.ErrorStateModel;
 import mike.weather.ui.base.BasePresenter;
 
@@ -56,6 +57,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
                                 })
                                 .onErrorReturn(throwable -> {
                                     ErrorStateModel.setError(throwable);
+                                    city.setCurrentConditions(new CurrentConditions());
                                     return city;
                                 })
                 )

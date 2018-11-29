@@ -99,18 +99,16 @@ public class DetailedActivity extends BaseActivity implements DetailedActivityCo
     }
 
     private void showCityConditions(City city) {
-        if (city.getCurrentConditions() != null) {
-            weatherDescription.setText(city.getCurrentConditions().getWeatherDescription());
-            icon.setImageResource(city.getCurrentConditions().getIcon());
-            currentTemp.setText(city.getCurrentConditions().getTempCelsius());
-            feelsLikeTemp.setText(city.getCurrentConditions().getFeelsLikeTempCelsius());
-            sunrise.setText(city.getCurrentConditions().getSunrise());
-            sunset.setText(city.getCurrentConditions().getSunset());
-            humidity.setText(city.getCurrentConditions().getHumidity());
-            wind.setText(city.getCurrentConditions().getWindSpeedKPH());
-            cloudsCoverage.setText(city.getCurrentConditions().getCloudsCoverage());
-            pressure.setText(city.getCurrentConditions().getPressureMillibars());
-        }
+        weatherDescription.setText(city.getCurrentConditions().getWeatherDescription());
+        icon.setImageResource(city.getCurrentConditions().getIcon());
+        currentTemp.setText(city.getCurrentConditions().getTempCelsius());
+        feelsLikeTemp.setText(city.getCurrentConditions().getFeelsLikeTempCelsius());
+        sunrise.setText(city.getCurrentConditions().getSunrise());
+        sunset.setText(city.getCurrentConditions().getSunset());
+        humidity.setText(city.getCurrentConditions().getHumidity());
+        wind.setText(city.getCurrentConditions().getWindSpeedKPH());
+        cloudsCoverage.setText(city.getCurrentConditions().getCloudsCoverage());
+        pressure.setText(city.getCurrentConditions().getPressureMillibars());
     }
 
     private void showCityForecast(City city) {

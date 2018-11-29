@@ -8,8 +8,6 @@ import org.joda.time.format.DateTimeFormat;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import mike.weather.App;
-import mike.weather.R;
 import mike.weather.util.WeatherImageUtils;
 
 public class Forecast {
@@ -25,30 +23,44 @@ public class Forecast {
     private String maxTempCelsiuis;
 
     public String getTime() {
-        return DateTime.parse(dateTime).toString(DateTimeFormat.shortTime());
+        if (dateTime != null)
+            return DateTime.parse(dateTime).toString(DateTimeFormat.shortTime());
+        else return "";
     }
 
     public String getDate() {
-        return DateTime.parse(dateTime).toString(DateTimeFormat.shortDate());
+        if (dateTime != null)
+            return DateTime.parse(dateTime).toString(DateTimeFormat.shortDate());
+        else return "";
     }
 
     public String getDayOfWeek() {
-        return DateTime.parse(dateTime).dayOfWeek().getAsText();
+        if (dateTime != null)
+            return DateTime.parse(dateTime).dayOfWeek().getAsText();
+        else return "";
     }
 
     public int getIcon() {
-        return WeatherImageUtils.getImageResource(icon);
+        if (icon != null)
+            return WeatherImageUtils.getImageResource(icon);
+        else return 0;
     }
 
     public String getTempCelsius() {
-        return new BigDecimal(tempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
+        if (tempCelsius != null)
+            return new BigDecimal(tempCelsius).setScale(0, RoundingMode.HALF_UP) + "°";
+        else return "";
     }
 
     public String getMinTempCelsius() {
-        return new BigDecimal(minTempCelsiuis).setScale(0, RoundingMode.HALF_UP) + "°";
+        if (minTempCelsiuis != null)
+            return new BigDecimal(minTempCelsiuis).setScale(0, RoundingMode.HALF_UP) + "°";
+        else return "";
     }
 
     public String getMaxTempCelsius() {
-        return new BigDecimal(maxTempCelsiuis).setScale(0, RoundingMode.HALF_UP) + "°";
+        if (maxTempCelsiuis != null)
+            return new BigDecimal(maxTempCelsiuis).setScale(0, RoundingMode.HALF_UP) + "°";
+        else return "";
     }
 }

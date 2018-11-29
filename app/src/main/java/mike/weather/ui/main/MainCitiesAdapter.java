@@ -45,10 +45,8 @@ public class MainCitiesAdapter extends BaseAdapter<City, MainCitiesAdapter.ViewH
         public void onBindView(City item, OnItemClickListener listener) {
             cityName.setText(item.getCityName());
             countryName.setText(item.getCountryName());
-            if (item.getCurrentConditions() != null) {
-                currentTemp.setText(item.getCurrentConditions().getTempCelsius());
-                weatherIcon.setImageResource(item.getCurrentConditions().getIcon());
-            }
+            currentTemp.setText(item.getCurrentConditions().getTempCelsius());
+            weatherIcon.setImageResource(item.getCurrentConditions().getIcon());
             itemView.setOnClickListener(l -> listener.onItemClick(getAdapterPosition()));
         }
     }

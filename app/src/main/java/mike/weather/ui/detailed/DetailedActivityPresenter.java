@@ -17,6 +17,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import mike.weather.data.IDataManager;
 import mike.weather.data.model.City;
+import mike.weather.data.model.CurrentConditions;
 import mike.weather.data.model.ErrorStateModel;
 import mike.weather.data.model.Forecast;
 import mike.weather.ui.base.BasePresenter;
@@ -50,32 +51,31 @@ public class DetailedActivityPresenter extends BasePresenter<DetailedActivityCon
     }
 
     private Single<City> getAllDataObservable() {
-        return getCityConditionsObservable()
-                .flatMap(city -> getCityForecastListObservable(city)
-                        .map(list -> {
-                            city.setForecastList(list);
+        return Single.just(mainCity)
+                .flatMap(city -> getCityConditionsObservable(city)
+                        .map(conditions -> {
+                            city.setCurrentConditions(conditions);
                             return city;
-                        })
-                )
+                        }))
+                .flatMap(city -> getCityForecastListObservable(city)
+                        .map(forecast -> {
+                            city.setForecastList(forecast);
+                            return city;
+                        }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<City> getCityConditionsObservable() {
-        return Single.just(mainCity)
-                .flatMap(city ->
-                        getDataManager().getCityConditionsResponse(city.getQuery())
-                                .map(response -> {
-                                    ErrorStateModel.setError(null);
-                                    city.setCurrentConditions(response.getData().getCurrentConditions());
-                                    return city;
-                                })
-                                .onErrorReturn(throwable -> {
-                                    ErrorStateModel.setError(throwable);
-                                    return city;
-
-                                })
-                );
+    private Single<CurrentConditions> getCityConditionsObservable(City city) {
+        return getDataManager().getCityConditionsResponse(city.getQuery())
+                .map(response -> {
+                    ErrorStateModel.setError(null);
+                    return response.getData().getCurrentConditions();
+                })
+                .onErrorReturn(throwable -> {
+                    ErrorStateModel.setError(throwable);
+                    return new CurrentConditions();
+                });
     }
 
     private Single<List<Forecast>> getCityForecastListObservable(City city) {
@@ -86,8 +86,7 @@ public class DetailedActivityPresenter extends BasePresenter<DetailedActivityCon
                 })
                 .onErrorReturn(throwable -> {
                     ErrorStateModel.setError(throwable);
-                    if (city.getForecastList() != null) return city.getForecastList();
-                    else return new ArrayList<>();
+                    return new ArrayList<>();
                 });
     }
 
